@@ -567,16 +567,116 @@ def prox_grad(f_grad, prox_g, x0, step_size, max_iter=1000):
         </div>
     </main>
     
+            <!-- Weekly Reviews Section -->
+        <div id="weekly" class="posts-section" style="display: none;">
+            <h2>Weekly Reviews</h2>
+            <div class="weekly-summary">
+                <h3>📊 Week 33 Summary</h3>
+                <p><strong>Total Hours This Week:</strong> Jorys: 28.5h | Tanguy: 31h</p>
+                <p><strong>Key Achievements:</strong> Major breakthrough in understanding cohomology (Jorys) and implementing ADMM (Tanguy)</p>
+                <p><strong>Collaboration:</strong> Found connections between optimization on manifolds and differential geometry</p>
+            </div>
+            <div class="weekly-summary">
+                <h3>📊 Week 32 Summary</h3>
+                <p><strong>Total Hours This Week:</strong> Jorys: 25h | Tanguy: 27h</p>
+                <p><strong>Focus:</strong> Schemes and varieties (Jorys), Convex optimization basics (Tanguy)</p>
+            </div>
+        </div>
+        
+        <!-- Resources Section -->
+        <div id="resources" class="posts-section" style="display: none;">
+            <h2>Resources</h2>
+            <div class="post">
+                <h3>📚 Jorys's Resources - Algebraic Geometry</h3>
+                <ul style="line-height: 2; color: var(--text-secondary);">
+                    <li><a href="https://math.stanford.edu/~vakil/216blog/FOAGnov1817public.pdf" class="resource-link">Vakil - The Rising Sea (Algebraic Geometry)</a></li>
+                    <li><a href="https://stacks.math.columbia.edu/" class="resource-link">The Stacks Project</a></li>
+                    <li><a href="#" class="resource-link">Hartshorne - Algebraic Geometry</a></li>
+                    <li><a href="#" class="resource-link">Eisenbud & Harris - Geometry of Schemes</a></li>
+                </ul>
+                <h3>📐 Tanguy's Resources - Optimization</h3>
+                <ul style="line-height: 2; color: var(--text-secondary);">
+                    <li><a href="https://web.stanford.edu/~boyd/cvxbook/" class="resource-link">Boyd & Vandenberghe - Convex Optimization</a></li>
+                    <li><a href="https://web.stanford.edu/~boyd/papers/prox_algs.html" class="resource-link">Proximal Algorithms</a></li>
+                    <li><a href="#" class="resource-link">Nocedal & Wright - Numerical Optimization</a></li>
+                    <li><a href="#" class="resource-link">Beck - First-Order Methods in Optimization</a></li>
+                </ul>
+                <h3>🔗 Shared Resources</h3>
+                <ul style="line-height: 2; color: var(--text-secondary);">
+                    <li><a href="#" class="resource-link">Absil et al. - Optimization Algorithms on Matrix Manifolds</a></li>
+                    <li><a href="https://www.math3ma.com/" class="resource-link">Tai-Danae Bradley's Math Blog</a></li>
+                    <li><a href="https://terrytao.wordpress.com/" class="resource-link">Terence Tao's Blog</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- About Section -->
+        <div id="about" class="posts-section" style="display: none;">
+            <h2>About This Blog</h2>
+            <div class="post">
+                <h3>Our Mission</h3>
+                <p>We're two master's students in applied mathematics documenting our daily journey toward PhD programs. This blog serves as both a motivational tool and a record of our learning process.</p>
+                
+                <h3>The Authors</h3>
+                <div style="margin: 2rem 0;">
+                    <h4 style="color: var(--accent-jorys); margin-bottom: 1rem;">Jorys Mahamba</h4>
+                    <p>Pursuing a PhD in pure mathematics, focusing on algebraic geometry and mathematical foundations of quantum gravity. Target programs: MPIM Bonn, Princeton.</p>
+                    <p style="margin-top: 0.5rem;"><strong>Research Interests:</strong> Schemes, Cohomology, Category Theory, Quantum Geometry</p>
+                </div>
+                
+                <div style="margin: 2rem 0;">
+                    <h4 style="color: var(--accent-tanguy); margin-bottom: 1rem;">Tanguy Villain</h4>
+                    <p>Pursuing a PhD in applied mathematics at École Polytechnique, specializing in optimization theory and algorithms.</p>
+                    <p style="margin-top: 0.5rem;"><strong>Research Interests:</strong> Convex Optimization, Proximal Methods, Distributed Algorithms, Machine Learning</p>
+                </div>
+                
+                <h3>Why This Blog?</h3>
+                <p>Daily accountability and structure are crucial for PhD preparation. By documenting our work publicly, we:</p>
+                <ul style="line-height: 2; color: var(--text-secondary); margin-left: 2rem;">
+                    <li>Maintain consistent study habits</li>
+                    <li>Track progress quantitatively</li>
+                    <li>Share insights across pure and applied mathematics</li>
+                    <li>Build a portfolio for PhD applications</li>
+                </ul>
+                
+                <h3>Contact</h3>
+                <p>Feel free to reach out if you're on a similar journey or have questions about our work!</p>
+            </div>
+        </div>
+    </main>
+    
     <!-- Floating Add Button -->
-    <button class="add-post-btn">+</button>
+    <button class="add-post-btn" onclick="showAddPostInstructions()">+</button>
+    
+    <!-- Add Post Instructions Modal -->
+    <div id="addPostModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; padding: 2rem;">
+        <div style="max-width: 600px; margin: 5% auto; background: var(--bg-secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
+            <h2 style="color: var(--accent-jorys); margin-bottom: 1rem;">How to Add a New Post</h2>
+            <ol style="line-height: 2; color: var(--text-secondary);">
+                <li>Go to the GitHub repository</li>
+                <li>Click on <code>index.html</code></li>
+                <li>Click the pencil icon to edit</li>
+                <li>Find the <code>&lt;!-- Sample Posts --&gt;</code> section</li>
+                <li>Copy one of the existing post blocks</li>
+                <li>Paste it at the top of the posts section</li>
+                <li>Update the date, author, title, and content</li>
+                <li>Commit your changes</li>
+            </ol>
+            <button onclick="closeAddPostModal()" style="background: var(--accent-jorys); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 1rem;">Got it!</button>
+        </div>
+    </div>
     
     <script>
         // Initialize KaTeX rendering
         document.addEventListener("DOMContentLoaded", function() {
             renderMathInElement(document.body, {
                 delimiters: [
-                    {left: '$$', right: '$$', display: true},
-                    {left: '$', right: '$', display: false},
+                    {left: '$', right: '$', display: true},
+                    {left: '
+</body>
+</html>, right: '
+</body>
+</html>, display: false},
                     {left: '\\(', right: '\\)', display: false},
                     {left: '\\[', right: '\\]', display: true}
                 ],
@@ -587,31 +687,81 @@ def prox_grad(f_grad, prox_g, x0, step_size, max_iter=1000):
             hljs.highlightAll();
         });
         
+        // Navigation functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.posts-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show the selected section
+            if (sectionId === 'home') {
+                document.querySelector('.posts-section').style.display = 'block';
+            } else {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.style.display = 'block';
+                }
+            }
+            
+            // Update active nav link
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + sectionId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Navigation click handlers
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('href').replace('#', '');
+                showSection(sectionId);
+            });
+        });
+        
         // Filter functionality
         const filterBtns = document.querySelectorAll('.filter-btn');
+        const posts = document.querySelectorAll('.post');
+        
         filterBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 filterBtns.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
-                // Add filtering logic here
+                
+                const filter = this.textContent.toLowerCase();
+                
+                posts.forEach(post => {
+                    if (filter === 'all') {
+                        post.style.display = 'block';
+                    } else {
+                        const authorBadge = post.querySelector('.author-badge');
+                        if (authorBadge) {
+                            const author = authorBadge.textContent.toLowerCase();
+                            if (author === filter) {
+                                post.style.display = 'block';
+                            } else {
+                                post.style.display = 'none';
+                            }
+                        }
+                    }
+                });
             });
         });
         
-        // Smooth scrolling for navigation
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const section = document.querySelector(this.getAttribute('href'));
-                if (section) {
-                    section.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
+        // Add post modal functions
+        function showAddPostInstructions() {
+            document.getElementById('addPostModal').style.display = 'block';
+        }
         
-        // Add post button animation
-        document.querySelector('.add-post-btn').addEventListener('click', function() {
-            alert('This would open a new post form. In the real implementation, this would trigger a markdown editor or redirect to a new post page.');
-        });
+        function closeAddPostModal() {
+            document.getElementById('addPostModal').style.display = 'none';
+        }
+        
+        // Initialize with home section visible
+        showSection('home');
     </script>
 </body>
 </html>
