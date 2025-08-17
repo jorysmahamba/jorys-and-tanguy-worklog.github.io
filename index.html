@@ -1,1817 +1,713 @@
-<!-- Weekly Reviews Section -->
-        <div id="weekly" class="posts-section" style="display: none;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Mathematics Log</title>
+    
+    <!-- KaTeX for LaTeX rendering -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #252525;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent-jorys: #6366f1;
+            --accent-tanguy: #ec4899;
+            --border: #333;
+            --code-bg: #1e1e1e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--accent-jorys), var(--accent-tanguy));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        nav button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.95rem;
+            padding: 0.5rem;
+            transition: color 0.3s;
+        }
+        
+        nav button:hover {
+            color: var(--text-primary);
+        }
+        
+        nav button.active {
+            color: var(--accent-jorys);
+        }
+        
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .stat-card h3 {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+        
+        .stat-card.jorys {
+            border-left: 3px solid var(--accent-jorys);
+        }
+        
+        .stat-card.tanguy {
+            border-left: 3px solid var(--accent-tanguy);
+        }
+        
+        /* Content Sections */
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .filter-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .filter-btn.active {
+            background: var(--accent-jorys);
+            color: white;
+            border-color: var(--accent-jorys);
+        }
+        
+        /* Post Cards */
+        .post {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+        
+        .post:hover {
+            border-color: #444;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .post-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .author-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .author-badge.jorys {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--accent-jorys);
+            border: 1px solid var(--accent-jorys);
+        }
+        
+        .author-badge.tanguy {
+            background: rgba(236, 72, 153, 0.2);
+            color: var(--accent-tanguy);
+            border: 1px solid var(--accent-tanguy);
+        }
+        
+        .post-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .hours-badge {
+            background: var(--bg-tertiary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+        
+        .post-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .post-content p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        
+        .topics-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .topic-tag {
+            background: var(--bg-tertiary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        /* Resources */
+        .resources {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .resources h4 {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .resource-link {
+            color: var(--accent-jorys);
+            text-decoration: none;
+            margin-right: 1rem;
+            font-size: 0.95rem;
+            transition: opacity 0.3s;
+        }
+        
+        .resource-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+        
+        /* Math Content */
+        .math-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        code {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+        
+        /* Weekly Summary */
+        .weekly-summary {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .weekly-summary h3 {
+            color: var(--accent-jorys);
+            margin-bottom: 1rem;
+        }
+        
+        /* Add Post Button */
+        .add-post-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--accent-jorys), var(--accent-tanguy));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 1000;
+        }
+        
+        .add-post-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            max-width: 700px;
+            margin: 5% auto;
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+            
+            .stats-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <h1>Daily Mathematics Log</h1>
+                <div class="subtitle">Jorys & Tanguy | PhD Journey in Mathematics</div>
+            </div>
+            <nav>
+                <button class="nav-btn active" onclick="showPage('home')">Home</button>
+                <button class="nav-btn" onclick="showPage('weekly')">Weekly Reviews</button>
+                <button class="nav-btn" onclick="showPage('resources')">Resources</button>
+                <button class="nav-btn" onclick="showPage('about')">About</button>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <!-- Statistics Dashboard -->
+        <div class="stats-section">
+            <div class="stat-card jorys">
+                <h3>Jorys - Total Hours</h3>
+                <div class="stat-value">127</div>
+            </div>
+            <div class="stat-card tanguy">
+                <h3>Tanguy - Total Hours</h3>
+                <div class="stat-value">134</div>
+            </div>
+            <div class="stat-card">
+                <h3>Current Streak</h3>
+                <div class="stat-value">12 days</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Posts</h3>
+                <div class="stat-value">48</div>
+            </div>
+        </div>
+        
+        <!-- Home Page Content -->
+        <div id="home" class="content-section active">
             <div class="section-header">
-                <h2>Weekly Reviews</h2>
+                <h2>Recent Work Logs</h2>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterPosts('all')">All</button>
+                    <button class="filter-btn" onclick="filterPosts('jorys')">Jorys</button>
+                    <button class="filter-btn" onclick="filterPosts('tanguy')">Tanguy</button>
+                </div>
             </div>
             
             <div class="weekly-summary">
+                <h3>📊 Week 33 Summary</h3>
+                <p><strong>Jorys:</strong> Deep dive into sheaf cohomology and its applications to algebraic geometry. Made significant progress on understanding the relationship between Čech and derived functor cohomology.</p>
+                <p><strong>Tanguy:</strong> Focused on convex optimization theory, particularly proximal gradient methods and their convergence rates. Implemented several algorithms in Python.</p>
+                <p><strong>Joint insight:</strong> Found interesting connections between optimization on manifolds and differential geometry concepts Jorys has been studying.</p>
+            </div>
+            
+            <div id="posts-container">
+                <div class="post" data-author="jorys">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <span class="author-badge jorys">Jorys</span>
+                            <span class="post-date">August 17, 2025 • 21:45</span>
+                        </div>
+                        <span class="hours-badge">6.5 hours</span>
+                    </div>
+                    <div class="post-content">
+                        <h3>Sheaf Cohomology & Spectral Sequences</h3>
+                        <p>Productive session working through Hartshorne Chapter III. Finally understood the geometric interpretation of higher cohomology groups!</p>
+                        
+                        <div class="math-block">
+                            <p>Key insight: For a coherent sheaf \(\mathcal{F}\) on a projective scheme \(X\), we have the vanishing theorem:</p>
+                            <p style="text-align: center; margin: 1rem 0;">
+                                \(H^i(X, \mathcal{F}(n)) = 0\) for \(i > 0\) and \(n \gg 0\)
+                            </p>
+                        </div>
+                        
+                        <p>This has deep implications for understanding the global sections functor. Also worked through the proof of Serre duality.</p>
+                        
+                        <div class="topics-list">
+                            <span class="topic-tag">Algebraic Geometry</span>
+                            <span class="topic-tag">Cohomology</span>
+                            <span class="topic-tag">Spectral Sequences</span>
+                            <span class="topic-tag">Serre Duality</span>
+                        </div>
+                        
+                        <div class="resources">
+                            <h4>Resources</h4>
+                            <a href="#" class="resource-link">Hartshorne Ch. III §5-7</a>
+                            <a href="#" class="resource-link">Vakil's Rising Sea §18</a>
+                            <a href="#" class="resource-link">Stack Project - Cohomology</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="post" data-author="tanguy">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <span class="author-badge tanguy">Tanguy</span>
+                            <span class="post-date">August 17, 2025 • 20:30</span>
+                        </div>
+                        <span class="hours-badge">5 hours</span>
+                    </div>
+                    <div class="post-content">
+                        <h3>Proximal Gradient Methods & ADMM</h3>
+                        <p>Implemented and analyzed convergence of proximal gradient descent for composite optimization problems.</p>
+                        
+                        <div class="math-block">
+                            <p style="text-align: center;">\(\min_{x \in \mathbb{R}^n} f(x) + g(x)\)</p>
+                            <p>where \(f\) is smooth with \(L\)-Lipschitz gradient and \(g\) is convex</p>
+                        </div>
+                        
+                        <pre><code class="language-python"># Proximal gradient implementation
+def prox_grad(f_grad, prox_g, x0, step_size, max_iter=1000):
+    x = x0.copy()
+    for k in range(max_iter):
+        grad = f_grad(x)
+        x = prox_g(x - step_size * grad, step_size)
+    return x</code></pre>
+                        
+                        <div class="topics-list">
+                            <span class="topic-tag">Convex Optimization</span>
+                            <span class="topic-tag">Proximal Methods</span>
+                            <span class="topic-tag">ADMM</span>
+                        </div>
+                        
+                        <div class="resources">
+                            <h4>Resources</h4>
+                            <a href="#" class="resource-link">Boyd - Proximal Algorithms</a>
+                            <a href="#" class="resource-link">Beck & Teboulle (2009)</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="post" data-author="jorys">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <span class="author-badge jorys">Jorys</span>
+                            <span class="post-date">August 16, 2025 • 19:15</span>
+                        </div>
+                        <span class="hours-badge">4 hours</span>
+                    </div>
+                    <div class="post-content">
+                        <h3>Schemes and Morphisms</h3>
+                        <p>Today's breakthrough: finally internalized why we need schemes instead of just varieties. The nilpotent elements capture infinitesimal information!</p>
+                        
+                        <div class="math-block">
+                            <p style="text-align: center;">\(\text{Spec}(k[x]/(x^2)) \hookrightarrow \text{Spec}(k[x])\)</p>
+                        </div>
+                        
+                        <div class="topics-list">
+                            <span class="topic-tag">Schemes</span>
+                            <span class="topic-tag">Algebraic Geometry</span>
+                            <span class="topic-tag">Deformation Theory</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Weekly Reviews Page -->
+        <div id="weekly" class="content-section">
+            <h2>Weekly Reviews</h2>
+            
+            <div class="weekly-summary">
                 <h3>📊 Week 33 Summary (August 11-17, 2025)</h3>
-                <p><strong>Total Hours This Week:</strong> Jorys: 28.5h | Tanguy: 31h</p>
-                <p><strong>Jorys's Focus:</strong> Deep dive into sheaf cohomology and its applications to algebraic geometry. Made significant progress on understanding the relationship between Čech and derived functor cohomology.</p>
-                <p><strong>Tanguy's Focus:</strong> Focused on convex optimization theory, particularly proximal gradient methods and their convergence rates. Implemented several algorithms in Python.</p>
-                <p><strong>Joint Discovery:</strong> Found interesting connections between optimization on manifolds and differential geometry concepts.</p>
-                <p><strong>Next Week Goals:</strong> Jorys will start Hartshorne Chapter IV on curves. Tanguy will explore mirror descent and Bregman divergences.</p>
+                <p><strong>Total Hours:</strong> Jorys: 28.5h | Tanguy: 31h</p>
+                <p><strong>Jorys:</strong> Deep dive into sheaf cohomology and spectral sequences. Major breakthrough in understanding Serre duality.</p>
+                <p><strong>Tanguy:</strong> Implemented proximal gradient methods and started exploring ADMM for distributed optimization.</p>
+                <p><strong>Joint Discovery:</strong> Optimization on manifolds connects directly to differential geometry!</p>
             </div>
             
             <div class="weekly-summary">
                 <h3>📊 Week 32 Summary (August 4-10, 2025)</h3>
-                <p><strong>Total Hours This Week:</strong> Jorys: 25h | Tanguy: 27h</p>
-                <p><strong>Jorys's Focus:</strong> Introduction to schemes and their morphisms. Worked through the basics of affine and projective schemes.</p>
-                <p><strong>Tanguy's Focus:</strong> Review of convex analysis fundamentals. Implemented basic gradient descent variants.</p>
-                <p><strong>Challenge:</strong> Both struggled with the abstract nature of our respective topics but found that explaining concepts to each other helped solidify understanding.</p>
-            </div>
-            
-            <div class="weekly-summary">
-                <h3>📊 Week 31 Summary (July 28 - August 3, 2025)</h3>
-                <p><strong>Total Hours This Week:</strong> Jorys: 23h | Tanguy: 25h</p>
-                <p><strong>Milestone:</strong> Started the blog! Set up accountability structure.</p>
-                <p><strong>Focus Areas:</strong> Jorys began reviewing category theory. Tanguy worked through Boyd & Vandenberghe chapters 1-3.</p>
+                <p><strong>Total Hours:</strong> Jorys: 25h | Tanguy: 27h</p>
+                <p><strong>Focus:</strong> Schemes fundamentals (Jorys), Convex analysis basics (Tanguy)</p>
             </div>
         </div>
         
-        <!-- Resources Section -->
-        <div id="resources" class="posts-section" style="display: none;">
-            <div class="section-header">
-                <h2>Study Resources</h2>
-            </div>
+        <!-- Resources Page -->
+        <div id="resources" class="content-section">
+            <h2>Study Resources</h2>
             
             <div class="post">
-                <h3>📚 Jorys's Resources - Pure Mathematics</h3>
-                <div style="margin-top: 1.5rem;">
-                    <h4 style="color: var(--accent-jorys); margin-bottom: 1rem;">Algebraic Geometry</h4>
-                    <ul style="line-height: 2.5; color: var(--text-secondary); list-style: none;">
-                        <li>📖 <a href="https://math.stanford.edu/~vakil/216blog/FOAGnov1817public.pdf" class="resource-link" target="_blank">Vakil - The Rising Sea (Foundations of AG)</a></li>
-                        <li>📖 <a href="https://stacks.math.columbia.edu/" class="resource-link" target="_blank">The Stacks Project</a> - Comprehensive reference</li>
-                        <li>📖 Hartshorne - Algebraic Geometry (Physical book)</li>
-                        <li>📖 Eisenbud & Harris - The Geometry of Schemes</li>
-                        <li>📖 Shafarevich - Basic Algebraic Geometry</li>
-                    </ul>
-                    
-                    <h4 style="color: var(--accent-jorys); margin: 2rem 0 1rem;">Category Theory & Foundations</h4>
-                    <ul style="line-height: 2.5; color: var(--text-secondary); list-style: none;">
-                        <li>📖 Mac Lane - Categories for the Working Mathematician</li>
-                        <li>📖 Riehl - Category Theory in Context</li>
-                        <li>🎥 <a href="https://www.youtube.com/playlist?list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_" class="resource-link" target="_blank">Bartosz Milewski's Category Theory Lectures</a></li>
-                    </ul>
-                    
-                    <h4 style="color: var(--accent-jorys); margin: 2rem 0 1rem;">Quantum Geometry</h4>
-                    <ul style="line-height: 2.5; color: var(--text-secondary); list-style: none;">
-                        <li>📖 Connes - Noncommutative Geometry</li>
-                        <li>📖 Nakahara - Geometry, Topology and Physics</li>
-                    </ul>
-                </div>
-                
-                <h3 style="margin-top: 3rem;">📐 Tanguy's Resources - Applied Mathematics</h3>
-                <div style="margin-top: 1.5rem;">
-                    <h4 style="color: var(--accent-tanguy); margin-bottom: 1rem;">Convex Optimization</h4>
-                    <ul style="line-height: 2.5; color: var(--text-secondary); list-style: none;">
-                        <li>📖 <a href="https://web.stanford.edu/~boyd/cvxbook/" class="resource-link" target="_blank">Boyd & Vandenberghe - Convex Optimization</a></li>
-                        <li>📖 <a href="https://web.stanford.edu/~boyd/papers/prox_algs.html" class="resource-link" target="_blank">Parikh & Boyd - Proximal Algorithms</a></li>
-                        <li>📖 Rockafellar - Convex Analysis</li>
-                        <li>📖 Beck - First-Order Methods in Optimization</li>
-                    </ul>
-                    
-                    <h4 style="color: var(--accent-tanguy); margin: 2rem 0 1rem;">Numerical Methods</h4>
-                    <ul style="line-height: 2.5; color: var(--text-secondary); list-style: none;">
-                        <li>📖 Nocedal & Wright - Numerical Optimization</li>
-                        <li>📖 Bertsekas - Nonlinear Programming</li>
-                        <li>💻 <a href="https://cvxpy.org/" class="resource-link" target="_blank">CVX Python Library Documentation</a></li>
-                    </ul>
-                </div>
-                
-                <h3 style="margin-top: 3rem;">🔗 Shared Resources</h3>
-                <div style="margin-top: 1.5rem;">
-                    <ul style="line-height: 2.5; color: var(--text-secondary); list-style: none;">
-                        <li>📖 <a href="#" class="resource-link">Absil, Mahony & Sepulchre - Optimization Algorithms on Matrix Manifolds</a></li>
-                        <li>🌐 <a href="https://www.math3ma.com/" class="resource-link" target="_blank">Tai-Danae Bradley's Math Blog</a></li>
-                        <li>🌐 <a href="https://terrytao.wordpress.com/" class="resource-link" target="_blank">Terence Tao's Blog</a></li>
-                        <li>🌐 <a href="https://mathoverflow.net/" class="resource-link" target="_blank">MathOverflow</a></li>
-                        <li>🎥 <a href="https://www.youtube.com/c/InstitutdesHautesÉtudesScientifiques" class="resource-link" target="_blank">IHÉS Lectures</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        
-        <!-- About Section -->
-        <div id="about" class="posts-section" style="display: none;">
-            <div class="section-header">
-                <h2>About This Blog</h2>
-            </div>
-            
-            <div class="post">
-                <h3>📝 Our Mission</h3>
-                <p style="line-height: 1.8; margin-bottom: 2rem;">We're two master's students in applied mathematics documenting our daily journey toward PhD programs. This blog serves as both a motivational tool and a record of our learning process. By working in public and supporting each other, we maintain the consistency and depth needed for successful PhD applications.</p>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin: 3rem 0;">
-                    <div>
-                        <h3 style="color: var(--accent-jorys); margin-bottom: 1rem;">Jorys Mahamba</h3>
-                        <p style="margin-bottom: 1rem;"><strong>Goal:</strong> PhD in Pure Mathematics</p>
-                        <p style="margin-bottom: 1rem;"><strong>Target Programs:</strong> MPIM Bonn, Princeton</p>
-                        <p style="margin-bottom: 1rem;"><strong>Research Interests:</strong></p>
-                        <ul style="line-height: 2; margin-left: 1rem; color: var(--text-secondary);">
-                            <li>Algebraic Geometry</li>
-                            <li>Sheaf Cohomology</li>
-                            <li>Category Theory</li>
-                            <li>Mathematical Foundations of Quantum Gravity</li>
-                        </ul>
-                        <p style="margin-top: 1rem;"><strong>Current Focus:</strong> Working through Hartshorne's Algebraic Geometry and exploring connections between geometry and physics.</p>
-                    </div>
-                    
-                    <div>
-                        <h3 style="color: var(--accent-tanguy); margin-bottom: 1rem;">Tanguy Villain</h3>
-                        <p style="margin-bottom: 1rem;"><strong>Goal:</strong> PhD in Applied Mathematics</p>
-                        <p style="margin-bottom: 1rem;"><strong>Target Program:</strong> École Polytechnique</p>
-                        <p style="margin-bottom: 1rem;"><strong>Research Interests:</strong></p>
-                        <ul style="line-height: 2; margin-left: 1rem; color: var(--text-secondary);">
-                            <li>Convex Optimization</li>
-                            <li>Proximal Methods</li>
-                            <li>Distributed Algorithms</li>
-                            <li>Machine Learning Theory</li>
-                        </ul>
-                        <p style="margin-top: 1rem;"><strong>Current Focus:</strong> Implementing and analyzing convergence rates of optimization algorithms, with emphasis on proximal and splitting methods.</p>
-                    </div>
-                </div>
-                
-                <h3 style="margin-top: 3rem;">💡 Why This Blog?</h3>
-                <p style="line-height: 1.8; margin-bottom: 1rem;">Daily accountability and structure are crucial for PhD preparation. By documenting our work publicly, we:</p>
-                <ul style="line-height: 2; margin-left: 2rem; color: var(--text-secondary);">
-                    <li>Maintain consistent study habits through mutual accountability</li>
-                    <li>Track progress quantitatively (hours, topics, insights)</li>
-                    <li>Share insights across pure and applied mathematics</li>
-                    <li>Build a portfolio demonstrating dedication for PhD applications</li>
-                    <li>Learn from each other's different mathematical perspectives</li>
+                <h3>📚 Jorys - Pure Mathematics</h3>
+                <ul style="line-height: 2; margin: 1rem 0;">
+                    <li><a href="https://math.stanford.edu/~vakil/216blog/FOAGnov1817public.pdf" class="resource-link" target="_blank">Vakil - The Rising Sea</a></li>
+                    <li><a href="https://stacks.math.columbia.edu/" class="resource-link" target="_blank">The Stacks Project</a></li>
+                    <li>Hartshorne - Algebraic Geometry</li>
+                    <li>Mac Lane - Categories for the Working Mathematician</li>
                 </ul>
                 
-                <h3 style="margin-top: 3rem;">📧 Contact</h3>
-                <p style="line-height: 1.8;">Feel free to reach out if you're on a similar journey or have questions about our work! We're always happy to discuss mathematics and share experiences about PhD preparation.</p>
+                <h3>📐 Tanguy - Applied Mathematics</h3>
+                <ul style="line-height: 2; margin: 1rem 0;">
+                    <li><a href="https://web.stanford.edu/~boyd/cvxbook/" class="resource-link" target="_blank">Boyd & Vandenberghe - Convex Optimization</a></li>
+                    <li><a href="https://web.stanford.edu/~boyd/papers/prox_algs.html" class="resource-link" target="_blank">Proximal Algorithms</a></li>
+                    <li>Nocedal & Wright - Numerical Optimization</li>
+                </ul>
                 
-                <p style="margin-top: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 8px; border-left: 3px solid var(--accent-jorys);">
-                    <strong>Note:</strong> This blog is a work in progress. We update it daily with our learning logs and weekly with synthesis posts. All mathematical content reflects our current understanding as students - corrections and suggestions are welcome!
-                </p>
+                <h3>🔗 Shared Resources</h3>
+                <ul style="line-height: 2; margin: 1rem 0;">
+                    <li>Absil et al. - Optimization Algorithms on Matrix Manifolds</li>
+                    <li><a href="https://www.math3ma.com/" class="resource-link" target="_blank">Tai-Danae Bradley's Blog</a></li>
+                    <li><a href="https://terrytao.wordpress.com/" class="resource-link" target="_blank">Terence Tao's Blog</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- About Page -->
+        <div id="about" class="content-section">
+            <h2>About This Blog</h2>
+            
+            <div class="post">
+                <h3>Our Mission</h3>
+                <p>We're two master's students documenting our daily journey toward PhD programs in mathematics. This blog keeps us accountable and tracks our progress.</p>
+                
+                <div style="margin: 2rem 0;">
+                    <h3 style="color: var(--accent-jorys);">Jorys Mahamba</h3>
+                    <p><strong>Goal:</strong> PhD in Pure Mathematics (MPIM Bonn / Princeton)</p>
+                    <p><strong>Focus:</strong> Algebraic Geometry, Cohomology, Mathematical Physics</p>
+                </div>
+                
+                <div style="margin: 2rem 0;">
+                    <h3 style="color: var(--accent-tanguy);">Tanguy Villain</h3>
+                    <p><strong>Goal:</strong> PhD in Applied Mathematics (École Polytechnique)</p>
+                    <p><strong>Focus:</strong> Optimization, Machine Learning, Distributed Algorithms</p>
+                </div>
+                
+                <h3>Why This Blog?</h3>
+                <ul style="line-height: 2; margin-left: 2rem;">
+                    <li>Daily accountability through mutual support</li>
+                    <li>Quantitative progress tracking</li>
+                    <li>Portfolio for PhD applications</li>
+                    <li>Cross-pollination between pure and applied math</li>
+                </ul>
             </div>
         </div>
     </main>
     
-    <!-- Floating Add Button -->
-    <button class="add-post-btn" onclick="showAddPostInstructions()">+</button>
+    <!-- Add Post Button -->
+    <button class="add-post-btn" onclick="showModal()">+</button>
     
-    <!-- Add Post Instructions Modal -->
-    <div id="addPostModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; overflow-y: auto;">
-        <div style="max-width: 700px; margin: 5% auto; background: var(--bg-secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
-            <h2 style="color: var(--accent-jorys); margin-bottom: 1.5rem;">How to Add a New Post</h2>
-            
-            <h3 style="color: var(--text-primary); margin: 1.5rem 0 1rem;">Step-by-Step Instructions:</h3>
-            <ol style="line-height: 2; color: var(--text-secondary); margin-left: 1.5rem;">
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: var(--accent-jorys); margin-bottom: 1rem;">How to Add a New Post</h2>
+            <ol style="line-height: 2; margin: 1rem 0;">
                 <li>Go to your GitHub repository</li>
-                <li>Click on <code style="background: var(--bg-tertiary); padding: 0.2rem 0.5rem; border-radius: 4px;">index.html</code></li>
-                <li>Click the pencil icon (✏️) to edit</li>
-                <li>Search for <code style="background: var(--bg-tertiary); padding: 0.2rem 0.5rem; border-radius: 4px;">&lt;!-- Jorys Post 1 --&gt;</code></li>
-                <li>Copy the entire post block (from <code>&lt;div class="post"&gt;</code> to <code>&lt;/div&gt;</code>)</li>
-                <li>Paste it ABOVE the existing posts</li>
-                <li>Update: date, title, content, hours, and tags</li>
-                <li>Change <code>data-author="jorys"</code> to <code>data-author="tanguy"</code> if needed</li>
-                <li>Commit changes with a descriptive message</li>
+                <li>Edit the index.html file</li>
+                <li>Find the posts section</li>
+                <li>Copy an existing post block</li>
+                <li>Update with your content</li>
+                <li>Commit changes</li>
             </ol>
-            
-            <h3 style="color: var(--text-primary); margin: 2rem 0 1rem;">Post Template:</h3>
-            <pre style="background: var(--code-bg); padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.85rem;"><code>&lt;div class="post" data-author="jorys"&gt;
-    &lt;div class="post-header"&gt;
-        &lt;div class="post-meta"&gt;
-            &lt;span class="author-badge jorys"&gt;Jorys&lt;/span&gt;
-            &lt;span class="post-date"&gt;August 18, 2025 • 20:00&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;span class="hours-badge"&gt;5 hours&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;div class="post-content"&gt;
-        &lt;h3&gt;Your Title Here&lt;/h3&gt;
-        &lt;p&gt;Your description...&lt;/p&gt;
-        
-        &lt;div class="math-block"&gt;
-            &lt;p&gt;Math explanation:&lt;/p&gt;
-            &lt;p style="text-align: center;"&gt;
-                \(your \, equation\)
-            &lt;/p&gt;
-        &lt;/div&gt;
-        
-        &lt;div class="topics-list"&gt;
-            &lt;span class="topic-tag"&gt;Topic&lt;/span&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-&lt;/div&gt;</code></pre>
-            
-            <button onclick="closeAddPostModal()" style="background: var(--accent-jorys); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; margin-top: 1.5rem; font-size: 1rem;">Got it!</button>
+            <button onclick="hideModal()" style="background: var(--accent-jorys); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer;">Close</button>
         </div>
     </div>
     
     <script>
-        // Initialize KaTeX rendering
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: '$', right: '$', display: true},
-                    {left: '<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Mathematics Log</title>
-    
-    <!-- KaTeX for LaTeX rendering -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
-    
-    <!-- Highlight.js for code syntax highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    
-    <style>
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #1a1a1a;
-            --bg-tertiary: #252525;
-            --text-primary: #e0e0e0;
-            --text-secondary: #a0a0a0;
-            --accent-jorys: #6366f1;
-            --accent-tanguy: #ec4899;
-            --border: #333;
-            --code-bg: #1e1e1e;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-        
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-            border-bottom: 1px solid var(--border);
-            padding: 2rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, var(--accent-jorys), var(--accent-tanguy));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 0.25rem;
-        }
-        
-        /* Navigation */
-        nav {
-            display: flex;
-            gap: 2rem;
-        }
-        
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s;
-            font-size: 0.95rem;
-        }
-        
-        nav a:hover {
-            color: var(--text-primary);
-        }
-        
-        nav a.active {
-            color: var(--accent-jorys);
-        }
-        
-        /* Main Content */
-        main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-        
-        /* Stats Section */
-        .stats-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-        
-        .stat-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        
-        .stat-card h3 {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--text-primary);
-        }
-        
-        .stat-card.jorys {
-            border-left: 3px solid var(--accent-jorys);
-        }
-        
-        .stat-card.tanguy {
-            border-left: 3px solid var(--accent-tanguy);
-        }
-        
-        /* Blog Posts */
-        .posts-section {
-            margin-top: 3rem;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        
-        .section-header h2 {
-            font-size: 1.5rem;
-        }
-        
-        .filter-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .filter-btn {
-            padding: 0.5rem 1rem;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-        
-        .filter-btn:hover {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-        
-        .filter-btn.active {
-            background: var(--accent-jorys);
-            color: white;
-            border-color: var(--accent-jorys);
-        }
-        
-        /* Post Cards */
-        .post {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            transition: all 0.3s;
-        }
-        
-        .post:hover {
-            border-color: #444;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-        
-        .post-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-        
-        .post-meta {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-        
-        .author-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        
-        .author-badge.jorys {
-            background: rgba(99, 102, 241, 0.2);
-            color: var(--accent-jorys);
-            border: 1px solid var(--accent-jorys);
-        }
-        
-        .author-badge.tanguy {
-            background: rgba(236, 72, 153, 0.2);
-            color: var(--accent-tanguy);
-            border: 1px solid var(--accent-tanguy);
-        }
-        
-        .post-date {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-        
-        .hours-badge {
-            background: var(--bg-tertiary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            color: var(--text-primary);
-        }
-        
-        .post-content h3 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-        
-        .post-content p {
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 1rem;
-        }
-        
-        .topics-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        
-        .topic-tag {
-            background: var(--bg-tertiary);
-            padding: 0.35rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-        }
-        
-        /* Resources */
-        .resources {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-        
-        .resources h4 {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .resource-link {
-            color: var(--accent-jorys);
-            text-decoration: none;
-            margin-right: 1rem;
-            font-size: 0.95rem;
-            transition: opacity 0.3s;
-        }
-        
-        .resource-link:hover {
-            opacity: 0.8;
-            text-decoration: underline;
-        }
-        
-        /* Math Content */
-        .math-block {
-            background: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            overflow-x: auto;
-        }
-        
-        .math-inline {
-            background: var(--bg-tertiary);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-family: 'KaTeX_Main', serif;
-        }
-        
-        /* Code Blocks */
-        pre {
-            background: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
-        
-        code {
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-            font-size: 0.9rem;
-        }
-        
-        /* Weekly Summary */
-        .weekly-summary {
-            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .weekly-summary h3 {
-            color: var(--accent-jorys);
-            margin-bottom: 1rem;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            nav {
-                flex-direction: column;
-                gap: 0.5rem;
-                text-align: center;
-            }
-            
-            .stats-section {
-                grid-template-columns: 1fr;
-            }
-            
-            .post-header {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-        
-        /* Add New Post Button */
-        .add-post-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: linear-gradient(135deg, var(--accent-jorys), var(--accent-tanguy));
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 2rem;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.3);
-            transition: transform 0.3s, box-shadow 0.3s;
-            z-index: 1000;
-        }
-        
-        .add-post-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5);
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="header-content">
-            <div>
-                <h1>Daily Mathematics Log</h1>
-                <div class="subtitle">Jorys & Tanguy | PhD Journey in Mathematics</div>
-            </div>
-            <nav>
-                <a href="#home" class="active">Home</a>
-                <a href="#weekly">Weekly Reviews</a>
-                <a href="#resources">Resources</a>
-                <a href="#about">About</a>
-            </nav>
-        </div>
-    </header>
-    
-    <main>
-        <!-- Statistics Dashboard (Always visible) -->
-        <div class="stats-section" id="stats">
-            <div class="stat-card jorys">
-                <h3>Jorys - Total Hours</h3>
-                <div class="stat-value">127</div>
-            </div>
-            <div class="stat-card tanguy">
-                <h3>Tanguy - Total Hours</h3>
-                <div class="stat-value">134</div>
-            </div>
-            <div class="stat-card">
-                <h3>Current Streak</h3>
-                <div class="stat-value">12 days</div>
-            </div>
-            <div class="stat-card">
-                <h3>Total Posts</h3>
-                <div class="stat-value">48</div>
-            </div>
-        </div>
-        
-        <!-- Home Section with Posts -->
-        <div id="home" class="posts-section">
-            <div class="section-header">
-                <h2>Recent Work Logs</h2>
-                <div class="filter-buttons">
-                    <button class="filter-btn active" onclick="filterPosts('all')">All</button>
-                    <button class="filter-btn" onclick="filterPosts('jorys')">Jorys</button>
-                    <button class="filter-btn" onclick="filterPosts('tanguy')">Tanguy</button>
-                </div>
-            </div>
-            
-            <!-- Sample Weekly Summary -->
-            <div class="weekly-summary">
-                <h3>📊 Week 33 Summary</h3>
-                <p><strong>Jorys:</strong> Deep dive into sheaf cohomology and its applications to algebraic geometry. Made significant progress on understanding the relationship between Čech and derived functor cohomology.</p>
-                <p><strong>Tanguy:</strong> Focused on convex optimization theory, particularly proximal gradient methods and their convergence rates. Implemented several algorithms in Python.</p>
-                <p><strong>Joint insight:</strong> Found interesting connections between optimization on manifolds and differential geometry concepts Jorys has been studying.</p>
-            </div>
-            
-            <!-- All Posts Container -->
-            <div id="posts-container">
-                <!-- Jorys Post 1 -->
-                <div class="post" data-author="jorys">
-                    <div class="post-header">
-                        <div class="post-meta">
-                            <span class="author-badge jorys">Jorys</span>
-                            <span class="post-date">August 17, 2025 • 21:45</span>
-                        </div>
-                        <span class="hours-badge">6.5 hours</span>
-                    </div>
-                    <div class="post-content">
-                        <h3>Sheaf Cohomology & Spectral Sequences</h3>
-                        <p>Productive session working through Hartshorne Chapter III. Finally understood the geometric interpretation of higher cohomology groups!</p>
-                        
-                        <div class="math-block">
-                            <p>Key insight: For a coherent sheaf \(\mathcal{F}\) on a projective scheme \(X\), we have the vanishing theorem:</p>
-                            <p style="text-align: center; margin: 1rem 0;">
-                                \(H^i(X, \mathcal{F}(n)) = 0\) for \(i > 0\) and \(n \gg 0\)
-                            </p>
-                        </div>
-                        
-                        <p>This has deep implications for understanding the global sections functor. Also worked through the proof of Serre duality - the pairing between \(H^i(X, \mathcal{F})\) and \(H^{n-i}(X, \omega_X \otimes \mathcal{F}^∨)\) is starting to make sense.</p>
-                        
-                        <div class="topics-list">
-                            <span class="topic-tag">Algebraic Geometry</span>
-                            <span class="topic-tag">Cohomology</span>
-                            <span class="topic-tag">Spectral Sequences</span>
-                            <span class="topic-tag">Serre Duality</span>
-                        </div>
-                        
-                        <div class="resources">
-                            <h4>Resources</h4>
-                            <a href="#" class="resource-link">Hartshorne Ch. III §5-7</a>
-                            <a href="#" class="resource-link">Vakil's Rising Sea §18</a>
-                            <a href="#" class="resource-link">Stack Project - Cohomology</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Tanguy Post 1 -->
-                <div class="post" data-author="tanguy">
-                    <div class="post-header">
-                        <div class="post-meta">
-                            <span class="author-badge tanguy">Tanguy</span>
-                            <span class="post-date">August 17, 2025 • 20:30</span>
-                        </div>
-                        <span class="hours-badge">5 hours</span>
-                    </div>
-                    <div class="post-content">
-                        <h3>Proximal Gradient Methods & ADMM</h3>
-                        <p>Implemented and analyzed convergence of proximal gradient descent for composite optimization problems. The key is splitting the objective:</p>
-                        
-                        <div class="math-block">
-                            <p style="text-align: center;">\(\min_{x \in \mathbb{R}^n} f(x) + g(x)\)</p>
-                            <p>where \(f\) is smooth with \(L\)-Lipschitz gradient and \(g\) is convex (possibly non-smooth)</p>
-                        </div>
-                        
-                        <p>Derived the convergence rate \(O(1/k)\) for the function values. Also started exploring accelerated versions using Nesterov momentum - the improvement to \(O(1/k^2)\) is remarkable!</p>
-                        
-                        <pre><code class="language-python"># Proximal gradient implementation
-def prox_grad(f_grad, prox_g, x0, step_size, max_iter=1000):
-    x = x0.copy()
-    for k in range(max_iter):
-        grad = f_grad(x)
-        x = prox_g(x - step_size * grad, step_size)
-    return x</code></pre>
-                        
-                        <p>Tomorrow: diving into ADMM for distributed optimization. The connection to augmented Lagrangian methods is fascinating.</p>
-                        
-                        <div class="topics-list">
-                            <span class="topic-tag">Convex Optimization</span>
-                            <span class="topic-tag">Proximal Methods</span>
-                            <span class="topic-tag">ADMM</span>
-                            <span class="topic-tag">Python Implementation</span>
-                        </div>
-                        
-                        <div class="resources">
-                            <h4>Resources</h4>
-                            <a href="#" class="resource-link">Boyd - Proximal Algorithms</a>
-                            <a href="#" class="resource-link">Beck & Teboulle (2009)</a>
-                            <a href="#" class="resource-link">CVX Python Library</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Jorys Post 2 -->
-                <div class="post" data-author="jorys">
-                    <div class="post-header">
-                        <div class="post-meta">
-                            <span class="author-badge jorys">Jorys</span>
-                            <span class="post-date">August 16, 2025 • 19:15</span>
-                        </div>
-                        <span class="hours-badge">4 hours</span>
-                    </div>
-                    <div class="post-content">
-                        <h3>Schemes and Morphisms</h3>
-                        <p>Today's breakthrough: finally internalized why we need schemes instead of just varieties. The nilpotent elements capture infinitesimal information!</p>
-                        
-                        <p>Worked through examples of non-reduced schemes. The canonical example:</p>
-                        
-                        <div class="math-block">
-                            <p style="text-align: center;">\(\text{Spec}(k[x]/(x^2)) \hookrightarrow \text{Spec}(k[x])\)</p>
-                        </div>
-                        
-                        <p>This "fat point" remembers first-order deformation data. Connection to tangent spaces and deformation theory is becoming clearer.</p>
-                        
-                        <div class="topics-list">
-                            <span class="topic-tag">Schemes</span>
-                            <span class="topic-tag">Algebraic Geometry</span>
-                            <span class="topic-tag">Deformation Theory</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-    
-            <!-- Weekly Reviews Section -->
-        <div id="weekly" class="posts-section" style="display: none;">
-            <h2>Weekly Reviews</h2>
-            <div class="weekly-summary">
-                <h3>📊 Week 33 Summary</h3>
-                <p><strong>Total Hours This Week:</strong> Jorys: 28.5h | Tanguy: 31h</p>
-                <p><strong>Key Achievements:</strong> Major breakthrough in understanding cohomology (Jorys) and implementing ADMM (Tanguy)</p>
-                <p><strong>Collaboration:</strong> Found connections between optimization on manifolds and differential geometry</p>
-            </div>
-            <div class="weekly-summary">
-                <h3>📊 Week 32 Summary</h3>
-                <p><strong>Total Hours This Week:</strong> Jorys: 25h | Tanguy: 27h</p>
-                <p><strong>Focus:</strong> Schemes and varieties (Jorys), Convex optimization basics (Tanguy)</p>
-            </div>
-        </div>
-        
-        <!-- Resources Section -->
-        <div id="resources" class="posts-section" style="display: none;">
-            <h2>Resources</h2>
-            <div class="post">
-                <h3>📚 Jorys's Resources - Algebraic Geometry</h3>
-                <ul style="line-height: 2; color: var(--text-secondary);">
-                    <li><a href="https://math.stanford.edu/~vakil/216blog/FOAGnov1817public.pdf" class="resource-link">Vakil - The Rising Sea (Algebraic Geometry)</a></li>
-                    <li><a href="https://stacks.math.columbia.edu/" class="resource-link">The Stacks Project</a></li>
-                    <li><a href="#" class="resource-link">Hartshorne - Algebraic Geometry</a></li>
-                    <li><a href="#" class="resource-link">Eisenbud & Harris - Geometry of Schemes</a></li>
-                </ul>
-                <h3>📐 Tanguy's Resources - Optimization</h3>
-                <ul style="line-height: 2; color: var(--text-secondary);">
-                    <li><a href="https://web.stanford.edu/~boyd/cvxbook/" class="resource-link">Boyd & Vandenberghe - Convex Optimization</a></li>
-                    <li><a href="https://web.stanford.edu/~boyd/papers/prox_algs.html" class="resource-link">Proximal Algorithms</a></li>
-                    <li><a href="#" class="resource-link">Nocedal & Wright - Numerical Optimization</a></li>
-                    <li><a href="#" class="resource-link">Beck - First-Order Methods in Optimization</a></li>
-                </ul>
-                <h3>🔗 Shared Resources</h3>
-                <ul style="line-height: 2; color: var(--text-secondary);">
-                    <li><a href="#" class="resource-link">Absil et al. - Optimization Algorithms on Matrix Manifolds</a></li>
-                    <li><a href="https://www.math3ma.com/" class="resource-link">Tai-Danae Bradley's Math Blog</a></li>
-                    <li><a href="https://terrytao.wordpress.com/" class="resource-link">Terence Tao's Blog</a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <!-- About Section -->
-        <div id="about" class="posts-section" style="display: none;">
-            <h2>About This Blog</h2>
-            <div class="post">
-                <h3>Our Mission</h3>
-                <p>We're two master's students in applied mathematics documenting our daily journey toward PhD programs. This blog serves as both a motivational tool and a record of our learning process.</p>
-                
-                <h3>The Authors</h3>
-                <div style="margin: 2rem 0;">
-                    <h4 style="color: var(--accent-jorys); margin-bottom: 1rem;">Jorys Mahamba</h4>
-                    <p>Pursuing a PhD in pure mathematics, focusing on algebraic geometry and mathematical foundations of quantum gravity. Target programs: MPIM Bonn, Princeton.</p>
-                    <p style="margin-top: 0.5rem;"><strong>Research Interests:</strong> Schemes, Cohomology, Category Theory, Quantum Geometry</p>
-                </div>
-                
-                <div style="margin: 2rem 0;">
-                    <h4 style="color: var(--accent-tanguy); margin-bottom: 1rem;">Tanguy Villain</h4>
-                    <p>Pursuing a PhD in applied mathematics at École Polytechnique, specializing in optimization theory and algorithms.</p>
-                    <p style="margin-top: 0.5rem;"><strong>Research Interests:</strong> Convex Optimization, Proximal Methods, Distributed Algorithms, Machine Learning</p>
-                </div>
-                
-                <h3>Why This Blog?</h3>
-                <p>Daily accountability and structure are crucial for PhD preparation. By documenting our work publicly, we:</p>
-                <ul style="line-height: 2; color: var(--text-secondary); margin-left: 2rem;">
-                    <li>Maintain consistent study habits</li>
-                    <li>Track progress quantitatively</li>
-                    <li>Share insights across pure and applied mathematics</li>
-                    <li>Build a portfolio for PhD applications</li>
-                </ul>
-                
-                <h3>Contact</h3>
-                <p>Feel free to reach out if you're on a similar journey or have questions about our work!</p>
-            </div>
-        </div>
-    </main>
-    
-    <!-- Floating Add Button -->
-    <button class="add-post-btn" onclick="showAddPostInstructions()">+</button>
-    
-    <!-- Add Post Instructions Modal -->
-    <div id="addPostModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; padding: 2rem;">
-        <div style="max-width: 600px; margin: 5% auto; background: var(--bg-secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
-            <h2 style="color: var(--accent-jorys); margin-bottom: 1rem;">How to Add a New Post</h2>
-            <ol style="line-height: 2; color: var(--text-secondary);">
-                <li>Go to the GitHub repository</li>
-                <li>Click on <code>index.html</code></li>
-                <li>Click the pencil icon to edit</li>
-                <li>Find the <code>&lt;!-- Sample Posts --&gt;</code> section</li>
-                <li>Copy one of the existing post blocks</li>
-                <li>Paste it at the top of the posts section</li>
-                <li>Update the date, author, title, and content</li>
-                <li>Commit your changes</li>
-            </ol>
-            <button onclick="closeAddPostModal()" style="background: var(--accent-jorys); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 1rem;">Got it!</button>
-        </div>
-    </div>
-    
-    <script>
-        // Initialize KaTeX rendering
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: '$', right: '$', display: true},
-                    {left: '
-</body>
-</html>, right: '
-</body>
-</html>, display: false},
-                    {left: '\\(', right: '\\)', display: false},
-                    {left: '\\[', right: '\\]', display: true}
-                ],
-                throwOnError: false
+        // Page navigation
+        function showPage(pageId) {
+            // Hide all content sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
             });
             
-            // Initialize syntax highlighting
-            hljs.highlightAll();
-        });
-        
-        // Navigation functionality
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.posts-section').forEach(section => {
-                section.style.display = 'none';
+            // Show selected section
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
-            
-            // Show the selected section
-            if (sectionId === 'home') {
-                document.querySelector('.posts-section').style.display = 'block';
-            } else {
-                const section = document.getElementById(sectionId);
-                if (section) {
-                    section.style.display = 'block';
-                }
-            }
-            
-            // Update active nav link
-            document.querySelectorAll('nav a').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + sectionId) {
-                    link.classList.add('active');
-                }
-            });
+            event.target.classList.add('active');
         }
         
-        // Navigation click handlers
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const sectionId = this.getAttribute('href').replace('#', '');
-                showSection(sectionId);
-            });
-        });
-        
-        // Filter functionality
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const posts = document.querySelectorAll('.post');
-        
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                
-                const filter = this.textContent.toLowerCase();
-                
-                posts.forEach(post => {
-                    if (filter === 'all') {
-                        post.style.display = 'block';
-                    } else {
-                        const authorBadge = post.querySelector('.author-badge');
-                        if (authorBadge) {
-                            const author = authorBadge.textContent.toLowerCase();
-                            if (author === filter) {
-                                post.style.display = 'block';
-                            } else {
-                                post.style.display = 'none';
-                            }
-                        }
-                    }
-                });
-            });
-        });
-        
-        // Add post modal functions
-        function showAddPostInstructions() {
-            document.getElementById('addPostModal').style.display = 'block';
-        }
-        
-        function closeAddPostModal() {
-            document.getElementById('addPostModal').style.display = 'none';
-        }
-        
-        // Initialize with home section visible
-        showSection('home');
-    </script>
-</body>
-</html>, right: '<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Mathematics Log</title>
-    
-    <!-- KaTeX for LaTeX rendering -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
-    
-    <!-- Highlight.js for code syntax highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    
-    <style>
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #1a1a1a;
-            --bg-tertiary: #252525;
-            --text-primary: #e0e0e0;
-            --text-secondary: #a0a0a0;
-            --accent-jorys: #6366f1;
-            --accent-tanguy: #ec4899;
-            --border: #333;
-            --code-bg: #1e1e1e;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-        
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-            border-bottom: 1px solid var(--border);
-            padding: 2rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, var(--accent-jorys), var(--accent-tanguy));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 0.25rem;
-        }
-        
-        /* Navigation */
-        nav {
-            display: flex;
-            gap: 2rem;
-        }
-        
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s;
-            font-size: 0.95rem;
-        }
-        
-        nav a:hover {
-            color: var(--text-primary);
-        }
-        
-        nav a.active {
-            color: var(--accent-jorys);
-        }
-        
-        /* Main Content */
-        main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-        
-        /* Stats Section */
-        .stats-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-        
-        .stat-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        
-        .stat-card h3 {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--text-primary);
-        }
-        
-        .stat-card.jorys {
-            border-left: 3px solid var(--accent-jorys);
-        }
-        
-        .stat-card.tanguy {
-            border-left: 3px solid var(--accent-tanguy);
-        }
-        
-        /* Blog Posts */
-        .posts-section {
-            margin-top: 3rem;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        
-        .section-header h2 {
-            font-size: 1.5rem;
-        }
-        
-        .filter-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .filter-btn {
-            padding: 0.5rem 1rem;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-        
-        .filter-btn:hover {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-        
-        .filter-btn.active {
-            background: var(--accent-jorys);
-            color: white;
-            border-color: var(--accent-jorys);
-        }
-        
-        /* Post Cards */
-        .post {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            transition: all 0.3s;
-        }
-        
-        .post:hover {
-            border-color: #444;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-        
-        .post-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-        
-        .post-meta {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-        
-        .author-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        
-        .author-badge.jorys {
-            background: rgba(99, 102, 241, 0.2);
-            color: var(--accent-jorys);
-            border: 1px solid var(--accent-jorys);
-        }
-        
-        .author-badge.tanguy {
-            background: rgba(236, 72, 153, 0.2);
-            color: var(--accent-tanguy);
-            border: 1px solid var(--accent-tanguy);
-        }
-        
-        .post-date {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-        
-        .hours-badge {
-            background: var(--bg-tertiary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            color: var(--text-primary);
-        }
-        
-        .post-content h3 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-        
-        .post-content p {
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 1rem;
-        }
-        
-        .topics-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        
-        .topic-tag {
-            background: var(--bg-tertiary);
-            padding: 0.35rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-        }
-        
-        /* Resources */
-        .resources {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-        
-        .resources h4 {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .resource-link {
-            color: var(--accent-jorys);
-            text-decoration: none;
-            margin-right: 1rem;
-            font-size: 0.95rem;
-            transition: opacity 0.3s;
-        }
-        
-        .resource-link:hover {
-            opacity: 0.8;
-            text-decoration: underline;
-        }
-        
-        /* Math Content */
-        .math-block {
-            background: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            overflow-x: auto;
-        }
-        
-        .math-inline {
-            background: var(--bg-tertiary);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-family: 'KaTeX_Main', serif;
-        }
-        
-        /* Code Blocks */
-        pre {
-            background: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
-        
-        code {
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-            font-size: 0.9rem;
-        }
-        
-        /* Weekly Summary */
-        .weekly-summary {
-            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .weekly-summary h3 {
-            color: var(--accent-jorys);
-            margin-bottom: 1rem;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            nav {
-                flex-direction: column;
-                gap: 0.5rem;
-                text-align: center;
-            }
-            
-            .stats-section {
-                grid-template-columns: 1fr;
-            }
-            
-            .post-header {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-        
-        /* Add New Post Button */
-        .add-post-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: linear-gradient(135deg, var(--accent-jorys), var(--accent-tanguy));
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 2rem;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.3);
-            transition: transform 0.3s, box-shadow 0.3s;
-            z-index: 1000;
-        }
-        
-        .add-post-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5);
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="header-content">
-            <div>
-                <h1>Daily Mathematics Log</h1>
-                <div class="subtitle">Jorys & Tanguy | PhD Journey in Mathematics</div>
-            </div>
-            <nav>
-                <a href="#home" class="active">Home</a>
-                <a href="#weekly">Weekly Reviews</a>
-                <a href="#resources">Resources</a>
-                <a href="#about">About</a>
-            </nav>
-        </div>
-    </header>
-    
-    <main>
-        <!-- Statistics Dashboard (Always visible) -->
-        <div class="stats-section" id="stats">
-            <div class="stat-card jorys">
-                <h3>Jorys - Total Hours</h3>
-                <div class="stat-value">127</div>
-            </div>
-            <div class="stat-card tanguy">
-                <h3>Tanguy - Total Hours</h3>
-                <div class="stat-value">134</div>
-            </div>
-            <div class="stat-card">
-                <h3>Current Streak</h3>
-                <div class="stat-value">12 days</div>
-            </div>
-            <div class="stat-card">
-                <h3>Total Posts</h3>
-                <div class="stat-value">48</div>
-            </div>
-        </div>
-        
-        <!-- Home Section with Posts -->
-        <div id="home" class="posts-section">
-            <div class="section-header">
-                <h2>Recent Work Logs</h2>
-                <div class="filter-buttons">
-                    <button class="filter-btn active" onclick="filterPosts('all')">All</button>
-                    <button class="filter-btn" onclick="filterPosts('jorys')">Jorys</button>
-                    <button class="filter-btn" onclick="filterPosts('tanguy')">Tanguy</button>
-                </div>
-            </div>
-            
-            <!-- Sample Weekly Summary -->
-            <div class="weekly-summary">
-                <h3>📊 Week 33 Summary</h3>
-                <p><strong>Jorys:</strong> Deep dive into sheaf cohomology and its applications to algebraic geometry. Made significant progress on understanding the relationship between Čech and derived functor cohomology.</p>
-                <p><strong>Tanguy:</strong> Focused on convex optimization theory, particularly proximal gradient methods and their convergence rates. Implemented several algorithms in Python.</p>
-                <p><strong>Joint insight:</strong> Found interesting connections between optimization on manifolds and differential geometry concepts Jorys has been studying.</p>
-            </div>
-            
-            <!-- All Posts Container -->
-            <div id="posts-container">
-                <!-- Jorys Post 1 -->
-                <div class="post" data-author="jorys">
-                    <div class="post-header">
-                        <div class="post-meta">
-                            <span class="author-badge jorys">Jorys</span>
-                            <span class="post-date">August 17, 2025 • 21:45</span>
-                        </div>
-                        <span class="hours-badge">6.5 hours</span>
-                    </div>
-                    <div class="post-content">
-                        <h3>Sheaf Cohomology & Spectral Sequences</h3>
-                        <p>Productive session working through Hartshorne Chapter III. Finally understood the geometric interpretation of higher cohomology groups!</p>
-                        
-                        <div class="math-block">
-                            <p>Key insight: For a coherent sheaf \(\mathcal{F}\) on a projective scheme \(X\), we have the vanishing theorem:</p>
-                            <p style="text-align: center; margin: 1rem 0;">
-                                \(H^i(X, \mathcal{F}(n)) = 0\) for \(i > 0\) and \(n \gg 0\)
-                            </p>
-                        </div>
-                        
-                        <p>This has deep implications for understanding the global sections functor. Also worked through the proof of Serre duality - the pairing between \(H^i(X, \mathcal{F})\) and \(H^{n-i}(X, \omega_X \otimes \mathcal{F}^∨)\) is starting to make sense.</p>
-                        
-                        <div class="topics-list">
-                            <span class="topic-tag">Algebraic Geometry</span>
-                            <span class="topic-tag">Cohomology</span>
-                            <span class="topic-tag">Spectral Sequences</span>
-                            <span class="topic-tag">Serre Duality</span>
-                        </div>
-                        
-                        <div class="resources">
-                            <h4>Resources</h4>
-                            <a href="#" class="resource-link">Hartshorne Ch. III §5-7</a>
-                            <a href="#" class="resource-link">Vakil's Rising Sea §18</a>
-                            <a href="#" class="resource-link">Stack Project - Cohomology</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Tanguy Post 1 -->
-                <div class="post" data-author="tanguy">
-                    <div class="post-header">
-                        <div class="post-meta">
-                            <span class="author-badge tanguy">Tanguy</span>
-                            <span class="post-date">August 17, 2025 • 20:30</span>
-                        </div>
-                        <span class="hours-badge">5 hours</span>
-                    </div>
-                    <div class="post-content">
-                        <h3>Proximal Gradient Methods & ADMM</h3>
-                        <p>Implemented and analyzed convergence of proximal gradient descent for composite optimization problems. The key is splitting the objective:</p>
-                        
-                        <div class="math-block">
-                            <p style="text-align: center;">\(\min_{x \in \mathbb{R}^n} f(x) + g(x)\)</p>
-                            <p>where \(f\) is smooth with \(L\)-Lipschitz gradient and \(g\) is convex (possibly non-smooth)</p>
-                        </div>
-                        
-                        <p>Derived the convergence rate \(O(1/k)\) for the function values. Also started exploring accelerated versions using Nesterov momentum - the improvement to \(O(1/k^2)\) is remarkable!</p>
-                        
-                        <pre><code class="language-python"># Proximal gradient implementation
-def prox_grad(f_grad, prox_g, x0, step_size, max_iter=1000):
-    x = x0.copy()
-    for k in range(max_iter):
-        grad = f_grad(x)
-        x = prox_g(x - step_size * grad, step_size)
-    return x</code></pre>
-                        
-                        <p>Tomorrow: diving into ADMM for distributed optimization. The connection to augmented Lagrangian methods is fascinating.</p>
-                        
-                        <div class="topics-list">
-                            <span class="topic-tag">Convex Optimization</span>
-                            <span class="topic-tag">Proximal Methods</span>
-                            <span class="topic-tag">ADMM</span>
-                            <span class="topic-tag">Python Implementation</span>
-                        </div>
-                        
-                        <div class="resources">
-                            <h4>Resources</h4>
-                            <a href="#" class="resource-link">Boyd - Proximal Algorithms</a>
-                            <a href="#" class="resource-link">Beck & Teboulle (2009)</a>
-                            <a href="#" class="resource-link">CVX Python Library</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Jorys Post 2 -->
-                <div class="post" data-author="jorys">
-                    <div class="post-header">
-                        <div class="post-meta">
-                            <span class="author-badge jorys">Jorys</span>
-                            <span class="post-date">August 16, 2025 • 19:15</span>
-                        </div>
-                        <span class="hours-badge">4 hours</span>
-                    </div>
-                    <div class="post-content">
-                        <h3>Schemes and Morphisms</h3>
-                        <p>Today's breakthrough: finally internalized why we need schemes instead of just varieties. The nilpotent elements capture infinitesimal information!</p>
-                        
-                        <p>Worked through examples of non-reduced schemes. The canonical example:</p>
-                        
-                        <div class="math-block">
-                            <p style="text-align: center;">\(\text{Spec}(k[x]/(x^2)) \hookrightarrow \text{Spec}(k[x])\)</p>
-                        </div>
-                        
-                        <p>This "fat point" remembers first-order deformation data. Connection to tangent spaces and deformation theory is becoming clearer.</p>
-                        
-                        <div class="topics-list">
-                            <span class="topic-tag">Schemes</span>
-                            <span class="topic-tag">Algebraic Geometry</span>
-                            <span class="topic-tag">Deformation Theory</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-    
-            <!-- Weekly Reviews Section -->
-        <div id="weekly" class="posts-section" style="display: none;">
-            <h2>Weekly Reviews</h2>
-            <div class="weekly-summary">
-                <h3>📊 Week 33 Summary</h3>
-                <p><strong>Total Hours This Week:</strong> Jorys: 28.5h | Tanguy: 31h</p>
-                <p><strong>Key Achievements:</strong> Major breakthrough in understanding cohomology (Jorys) and implementing ADMM (Tanguy)</p>
-                <p><strong>Collaboration:</strong> Found connections between optimization on manifolds and differential geometry</p>
-            </div>
-            <div class="weekly-summary">
-                <h3>📊 Week 32 Summary</h3>
-                <p><strong>Total Hours This Week:</strong> Jorys: 25h | Tanguy: 27h</p>
-                <p><strong>Focus:</strong> Schemes and varieties (Jorys), Convex optimization basics (Tanguy)</p>
-            </div>
-        </div>
-        
-        <!-- Resources Section -->
-        <div id="resources" class="posts-section" style="display: none;">
-            <h2>Resources</h2>
-            <div class="post">
-                <h3>📚 Jorys's Resources - Algebraic Geometry</h3>
-                <ul style="line-height: 2; color: var(--text-secondary);">
-                    <li><a href="https://math.stanford.edu/~vakil/216blog/FOAGnov1817public.pdf" class="resource-link">Vakil - The Rising Sea (Algebraic Geometry)</a></li>
-                    <li><a href="https://stacks.math.columbia.edu/" class="resource-link">The Stacks Project</a></li>
-                    <li><a href="#" class="resource-link">Hartshorne - Algebraic Geometry</a></li>
-                    <li><a href="#" class="resource-link">Eisenbud & Harris - Geometry of Schemes</a></li>
-                </ul>
-                <h3>📐 Tanguy's Resources - Optimization</h3>
-                <ul style="line-height: 2; color: var(--text-secondary);">
-                    <li><a href="https://web.stanford.edu/~boyd/cvxbook/" class="resource-link">Boyd & Vandenberghe - Convex Optimization</a></li>
-                    <li><a href="https://web.stanford.edu/~boyd/papers/prox_algs.html" class="resource-link">Proximal Algorithms</a></li>
-                    <li><a href="#" class="resource-link">Nocedal & Wright - Numerical Optimization</a></li>
-                    <li><a href="#" class="resource-link">Beck - First-Order Methods in Optimization</a></li>
-                </ul>
-                <h3>🔗 Shared Resources</h3>
-                <ul style="line-height: 2; color: var(--text-secondary);">
-                    <li><a href="#" class="resource-link">Absil et al. - Optimization Algorithms on Matrix Manifolds</a></li>
-                    <li><a href="https://www.math3ma.com/" class="resource-link">Tai-Danae Bradley's Math Blog</a></li>
-                    <li><a href="https://terrytao.wordpress.com/" class="resource-link">Terence Tao's Blog</a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <!-- About Section -->
-        <div id="about" class="posts-section" style="display: none;">
-            <h2>About This Blog</h2>
-            <div class="post">
-                <h3>Our Mission</h3>
-                <p>We're two master's students in applied mathematics documenting our daily journey toward PhD programs. This blog serves as both a motivational tool and a record of our learning process.</p>
-                
-                <h3>The Authors</h3>
-                <div style="margin: 2rem 0;">
-                    <h4 style="color: var(--accent-jorys); margin-bottom: 1rem;">Jorys Mahamba</h4>
-                    <p>Pursuing a PhD in pure mathematics, focusing on algebraic geometry and mathematical foundations of quantum gravity. Target programs: MPIM Bonn, Princeton.</p>
-                    <p style="margin-top: 0.5rem;"><strong>Research Interests:</strong> Schemes, Cohomology, Category Theory, Quantum Geometry</p>
-                </div>
-                
-                <div style="margin: 2rem 0;">
-                    <h4 style="color: var(--accent-tanguy); margin-bottom: 1rem;">Tanguy Villain</h4>
-                    <p>Pursuing a PhD in applied mathematics at École Polytechnique, specializing in optimization theory and algorithms.</p>
-                    <p style="margin-top: 0.5rem;"><strong>Research Interests:</strong> Convex Optimization, Proximal Methods, Distributed Algorithms, Machine Learning</p>
-                </div>
-                
-                <h3>Why This Blog?</h3>
-                <p>Daily accountability and structure are crucial for PhD preparation. By documenting our work publicly, we:</p>
-                <ul style="line-height: 2; color: var(--text-secondary); margin-left: 2rem;">
-                    <li>Maintain consistent study habits</li>
-                    <li>Track progress quantitatively</li>
-                    <li>Share insights across pure and applied mathematics</li>
-                    <li>Build a portfolio for PhD applications</li>
-                </ul>
-                
-                <h3>Contact</h3>
-                <p>Feel free to reach out if you're on a similar journey or have questions about our work!</p>
-            </div>
-        </div>
-    </main>
-    
-    <!-- Floating Add Button -->
-    <button class="add-post-btn" onclick="showAddPostInstructions()">+</button>
-    
-    <!-- Add Post Instructions Modal -->
-    <div id="addPostModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; padding: 2rem;">
-        <div style="max-width: 600px; margin: 5% auto; background: var(--bg-secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
-            <h2 style="color: var(--accent-jorys); margin-bottom: 1rem;">How to Add a New Post</h2>
-            <ol style="line-height: 2; color: var(--text-secondary);">
-                <li>Go to the GitHub repository</li>
-                <li>Click on <code>index.html</code></li>
-                <li>Click the pencil icon to edit</li>
-                <li>Find the <code>&lt;!-- Sample Posts --&gt;</code> section</li>
-                <li>Copy one of the existing post blocks</li>
-                <li>Paste it at the top of the posts section</li>
-                <li>Update the date, author, title, and content</li>
-                <li>Commit your changes</li>
-            </ol>
-            <button onclick="closeAddPostModal()" style="background: var(--accent-jorys); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 1rem;">Got it!</button>
-        </div>
-    </div>
-    
-    <script>
-        // Initialize KaTeX rendering
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: '$', right: '$', display: true},
-                    {left: '
-</body>
-</html>, right: '
-</body>
-</html>, display: false},
-                    {left: '\\(', right: '\\)', display: false},
-                    {left: '\\[', right: '\\]', display: true}
-                ],
-                throwOnError: false
-            });
-            
-            // Initialize syntax highlighting
-            hljs.highlightAll();
-        });
-        
-        // Navigation functionality
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.posts-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            
-            // Show the selected section
-            if (sectionId === 'home') {
-                document.querySelector('.posts-section').style.display = 'block';
-            } else {
-                const section = document.getElementById(sectionId);
-                if (section) {
-                    section.style.display = 'block';
-                }
-            }
-            
-            // Update active nav link
-            document.querySelectorAll('nav a').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + sectionId) {
-                    link.classList.add('active');
-                }
-            });
-        }
-        
-        // Navigation click handlers
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const sectionId = this.getAttribute('href').replace('#', '');
-                showSection(sectionId);
-            });
-        });
-        
-        // Filter functionality
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const posts = document.querySelectorAll('.post');
-        
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                
-                const filter = this.textContent.toLowerCase();
-                
-                posts.forEach(post => {
-                    if (filter === 'all') {
-                        post.style.display = 'block';
-                    } else {
-                        const authorBadge = post.querySelector('.author-badge');
-                        if (authorBadge) {
-                            const author = authorBadge.textContent.toLowerCase();
-                            if (author === filter) {
-                                post.style.display = 'block';
-                            } else {
-                                post.style.display = 'none';
-                            }
-                        }
-                    }
-                });
-            });
-        });
-        
-        // Add post modal functions
-        function showAddPostInstructions() {
-            document.getElementById('addPostModal').style.display = 'block';
-        }
-        
-        function closeAddPostModal() {
-            document.getElementById('addPostModal').style.display = 'none';
-        }
-        
-        // Initialize with home section visible
-        showSection('home');
-    </script>
-</body>
-</html>, display: false},
-                    {left: '\\(', right: '\\)', display: false},
-                    {left: '\\[', right: '\\]', display: true}
-                ],
-                throwOnError: false
-            });
-            
-            // Initialize syntax highlighting
-            hljs.highlightAll();
-        });
-        
-        // Navigation functionality
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.posts-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            
-            // Show the selected section
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.style.display = 'block';
-            }
-            
-            // Update active nav link
-            document.querySelectorAll('nav a').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + sectionId) {
-                    link.classList.add('active');
-                }
-            });
-            
-            // Hide/show stats based on section
-            const stats = document.getElementById('stats');
-            if (sectionId === 'home') {
-                stats.style.display = 'grid';
-            } else {
-                stats.style.display = 'grid'; // Keep stats visible on all pages
-            }
-        }
-        
-        // Filter posts functionality
+        // Filter posts
         function filterPosts(author) {
             const posts = document.querySelectorAll('#posts-container .post');
-            const filterBtns = document.querySelectorAll('.filter-btn');
+            const buttons = document.querySelectorAll('.filter-btn');
             
-            // Update active button
-            filterBtns.forEach(btn => {
+            // Update button states
+            buttons.forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.textContent.toLowerCase() === author) {
                     btn.classList.add('active');
                 }
             });
             
-            // Show/hide posts based on filter
+            // Show/hide posts
             posts.forEach(post => {
                 if (author === 'all') {
                     post.style.display = 'block';
                 } else {
-                    const postAuthor = post.getAttribute('data-author');
-                    if (postAuthor === author) {
+                    if (post.dataset.author === author) {
                         post.style.display = 'block';
                     } else {
                         post.style.display = 'none';
@@ -1820,802 +716,39 @@ def prox_grad(f_grad, prox_g, x0, step_size, max_iter=1000):
             });
         }
         
-        // Navigation click handlers
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const sectionId = this.getAttribute('href').replace('#', '');
-                showSection(sectionId);
-            });
-        });
-        
-        // Add post modal functions
-        function showAddPostInstructions() {
-            document.getElementById('addPostModal').style.display = 'block';
+        // Modal functions
+        function showModal() {
+            document.getElementById('modal').style.display = 'block';
         }
         
-        function closeAddPostModal() {
-            document.getElementById('addPostModal').style.display = 'none';
+        function hideModal() {
+            document.getElementById('modal').style.display = 'none';
         }
         
-        // Close modal when clicking outside
-        document.getElementById('addPostModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeAddPostModal();
-            }
-        });
-        
-        // Initialize with home section visible
-        showSection('home');
-    </script><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Mathematics Log</title>
-    
-    <!-- KaTeX for LaTeX rendering -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
-    
-    <!-- Highlight.js for code syntax highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    
-    <style>
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #1a1a1a;
-            --bg-tertiary: #252525;
-            --text-primary: #e0e0e0;
-            --text-secondary: #a0a0a0;
-            --accent-jorys: #6366f1;
-            --accent-tanguy: #ec4899;
-            --border: #333;
-            --code-bg: #1e1e1e;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-        
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-            border-bottom: 1px solid var(--border);
-            padding: 2rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, var(--accent-jorys), var(--accent-tanguy));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 0.25rem;
-        }
-        
-        /* Navigation */
-        nav {
-            display: flex;
-            gap: 2rem;
-        }
-        
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s;
-            font-size: 0.95rem;
-        }
-        
-        nav a:hover {
-            color: var(--text-primary);
-        }
-        
-        nav a.active {
-            color: var(--accent-jorys);
-        }
-        
-        /* Main Content */
-        main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-        
-        /* Stats Section */
-        .stats-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-        
-        .stat-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        
-        .stat-card h3 {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--text-primary);
-        }
-        
-        .stat-card.jorys {
-            border-left: 3px solid var(--accent-jorys);
-        }
-        
-        .stat-card.tanguy {
-            border-left: 3px solid var(--accent-tanguy);
-        }
-        
-        /* Blog Posts */
-        .posts-section {
-            margin-top: 3rem;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        
-        .section-header h2 {
-            font-size: 1.5rem;
-        }
-        
-        .filter-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .filter-btn {
-            padding: 0.5rem 1rem;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-        
-        .filter-btn:hover {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-        
-        .filter-btn.active {
-            background: var(--accent-jorys);
-            color: white;
-            border-color: var(--accent-jorys);
-        }
-        
-        /* Post Cards */
-        .post {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            transition: all 0.3s;
-        }
-        
-        .post:hover {
-            border-color: #444;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-        
-        .post-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-        
-        .post-meta {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-        
-        .author-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        
-        .author-badge.jorys {
-            background: rgba(99, 102, 241, 0.2);
-            color: var(--accent-jorys);
-            border: 1px solid var(--accent-jorys);
-        }
-        
-        .author-badge.tanguy {
-            background: rgba(236, 72, 153, 0.2);
-            color: var(--accent-tanguy);
-            border: 1px solid var(--accent-tanguy);
-        }
-        
-        .post-date {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-        
-        .hours-badge {
-            background: var(--bg-tertiary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            color: var(--text-primary);
-        }
-        
-        .post-content h3 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-        
-        .post-content p {
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 1rem;
-        }
-        
-        .topics-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        
-        .topic-tag {
-            background: var(--bg-tertiary);
-            padding: 0.35rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-        }
-        
-        /* Resources */
-        .resources {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-        
-        .resources h4 {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .resource-link {
-            color: var(--accent-jorys);
-            text-decoration: none;
-            margin-right: 1rem;
-            font-size: 0.95rem;
-            transition: opacity 0.3s;
-        }
-        
-        .resource-link:hover {
-            opacity: 0.8;
-            text-decoration: underline;
-        }
-        
-        /* Math Content */
-        .math-block {
-            background: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            overflow-x: auto;
-        }
-        
-        .math-inline {
-            background: var(--bg-tertiary);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-family: 'KaTeX_Main', serif;
-        }
-        
-        /* Code Blocks */
-        pre {
-            background: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
-        
-        code {
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-            font-size: 0.9rem;
-        }
-        
-        /* Weekly Summary */
-        .weekly-summary {
-            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .weekly-summary h3 {
-            color: var(--accent-jorys);
-            margin-bottom: 1rem;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            nav {
-                flex-direction: column;
-                gap: 0.5rem;
-                text-align: center;
-            }
-            
-            .stats-section {
-                grid-template-columns: 1fr;
-            }
-            
-            .post-header {
-                flex-direction: column;
-                gap: 0.5rem;
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
             }
         }
         
-        /* Add New Post Button */
-        .add-post-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: linear-gradient(135deg, var(--accent-jorys), var(--accent-tanguy));
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 2rem;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.3);
-            transition: transform 0.3s, box-shadow 0.3s;
-            z-index: 1000;
-        }
-        
-        .add-post-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5);
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="header-content">
-            <div>
-                <h1>Daily Mathematics Log</h1>
-                <div class="subtitle">Jorys & Tanguy | PhD Journey in Mathematics</div>
-            </div>
-            <nav>
-                <a href="#home" class="active">Home</a>
-                <a href="#weekly">Weekly Reviews</a>
-                <a href="#resources">Resources</a>
-                <a href="#about">About</a>
-            </nav>
-        </div>
-    </header>
-    
-    <main>
-        <!-- Statistics Dashboard (Always visible) -->
-        <div class="stats-section" id="stats">
-            <div class="stat-card jorys">
-                <h3>Jorys - Total Hours</h3>
-                <div class="stat-value">127</div>
-            </div>
-            <div class="stat-card tanguy">
-                <h3>Tanguy - Total Hours</h3>
-                <div class="stat-value">134</div>
-            </div>
-            <div class="stat-card">
-                <h3>Current Streak</h3>
-                <div class="stat-value">12 days</div>
-            </div>
-            <div class="stat-card">
-                <h3>Total Posts</h3>
-                <div class="stat-value">48</div>
-            </div>
-        </div>
-        
-        <!-- Home Section with Posts -->
-        <div id="home" class="posts-section">
-            <div class="section-header">
-                <h2>Recent Work Logs</h2>
-                <div class="filter-buttons">
-                    <button class="filter-btn active" onclick="filterPosts('all')">All</button>
-                    <button class="filter-btn" onclick="filterPosts('jorys')">Jorys</button>
-                    <button class="filter-btn" onclick="filterPosts('tanguy')">Tanguy</button>
-                </div>
-            </div>
-            
-            <!-- Sample Weekly Summary -->
-            <div class="weekly-summary">
-                <h3>📊 Week 33 Summary</h3>
-                <p><strong>Jorys:</strong> Deep dive into sheaf cohomology and its applications to algebraic geometry. Made significant progress on understanding the relationship between Čech and derived functor cohomology.</p>
-                <p><strong>Tanguy:</strong> Focused on convex optimization theory, particularly proximal gradient methods and their convergence rates. Implemented several algorithms in Python.</p>
-                <p><strong>Joint insight:</strong> Found interesting connections between optimization on manifolds and differential geometry concepts Jorys has been studying.</p>
-            </div>
-            
-            <!-- All Posts Container -->
-            <div id="posts-container">
-                <!-- Jorys Post 1 -->
-                <div class="post" data-author="jorys">
-                    <div class="post-header">
-                        <div class="post-meta">
-                            <span class="author-badge jorys">Jorys</span>
-                            <span class="post-date">August 17, 2025 • 21:45</span>
-                        </div>
-                        <span class="hours-badge">6.5 hours</span>
-                    </div>
-                    <div class="post-content">
-                        <h3>Sheaf Cohomology & Spectral Sequences</h3>
-                        <p>Productive session working through Hartshorne Chapter III. Finally understood the geometric interpretation of higher cohomology groups!</p>
-                        
-                        <div class="math-block">
-                            <p>Key insight: For a coherent sheaf \(\mathcal{F}\) on a projective scheme \(X\), we have the vanishing theorem:</p>
-                            <p style="text-align: center; margin: 1rem 0;">
-                                \(H^i(X, \mathcal{F}(n)) = 0\) for \(i > 0\) and \(n \gg 0\)
-                            </p>
-                        </div>
-                        
-                        <p>This has deep implications for understanding the global sections functor. Also worked through the proof of Serre duality - the pairing between \(H^i(X, \mathcal{F})\) and \(H^{n-i}(X, \omega_X \otimes \mathcal{F}^∨)\) is starting to make sense.</p>
-                        
-                        <div class="topics-list">
-                            <span class="topic-tag">Algebraic Geometry</span>
-                            <span class="topic-tag">Cohomology</span>
-                            <span class="topic-tag">Spectral Sequences</span>
-                            <span class="topic-tag">Serre Duality</span>
-                        </div>
-                        
-                        <div class="resources">
-                            <h4>Resources</h4>
-                            <a href="#" class="resource-link">Hartshorne Ch. III §5-7</a>
-                            <a href="#" class="resource-link">Vakil's Rising Sea §18</a>
-                            <a href="#" class="resource-link">Stack Project - Cohomology</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Tanguy Post 1 -->
-                <div class="post" data-author="tanguy">
-                    <div class="post-header">
-                        <div class="post-meta">
-                            <span class="author-badge tanguy">Tanguy</span>
-                            <span class="post-date">August 17, 2025 • 20:30</span>
-                        </div>
-                        <span class="hours-badge">5 hours</span>
-                    </div>
-                    <div class="post-content">
-                        <h3>Proximal Gradient Methods & ADMM</h3>
-                        <p>Implemented and analyzed convergence of proximal gradient descent for composite optimization problems. The key is splitting the objective:</p>
-                        
-                        <div class="math-block">
-                            <p style="text-align: center;">\(\min_{x \in \mathbb{R}^n} f(x) + g(x)\)</p>
-                            <p>where \(f\) is smooth with \(L\)-Lipschitz gradient and \(g\) is convex (possibly non-smooth)</p>
-                        </div>
-                        
-                        <p>Derived the convergence rate \(O(1/k)\) for the function values. Also started exploring accelerated versions using Nesterov momentum - the improvement to \(O(1/k^2)\) is remarkable!</p>
-                        
-                        <pre><code class="language-python"># Proximal gradient implementation
-def prox_grad(f_grad, prox_g, x0, step_size, max_iter=1000):
-    x = x0.copy()
-    for k in range(max_iter):
-        grad = f_grad(x)
-        x = prox_g(x - step_size * grad, step_size)
-    return x</code></pre>
-                        
-                        <p>Tomorrow: diving into ADMM for distributed optimization. The connection to augmented Lagrangian methods is fascinating.</p>
-                        
-                        <div class="topics-list">
-                            <span class="topic-tag">Convex Optimization</span>
-                            <span class="topic-tag">Proximal Methods</span>
-                            <span class="topic-tag">ADMM</span>
-                            <span class="topic-tag">Python Implementation</span>
-                        </div>
-                        
-                        <div class="resources">
-                            <h4>Resources</h4>
-                            <a href="#" class="resource-link">Boyd - Proximal Algorithms</a>
-                            <a href="#" class="resource-link">Beck & Teboulle (2009)</a>
-                            <a href="#" class="resource-link">CVX Python Library</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Jorys Post 2 -->
-                <div class="post" data-author="jorys">
-                    <div class="post-header">
-                        <div class="post-meta">
-                            <span class="author-badge jorys">Jorys</span>
-                            <span class="post-date">August 16, 2025 • 19:15</span>
-                        </div>
-                        <span class="hours-badge">4 hours</span>
-                    </div>
-                    <div class="post-content">
-                        <h3>Schemes and Morphisms</h3>
-                        <p>Today's breakthrough: finally internalized why we need schemes instead of just varieties. The nilpotent elements capture infinitesimal information!</p>
-                        
-                        <p>Worked through examples of non-reduced schemes. The canonical example:</p>
-                        
-                        <div class="math-block">
-                            <p style="text-align: center;">\(\text{Spec}(k[x]/(x^2)) \hookrightarrow \text{Spec}(k[x])\)</p>
-                        </div>
-                        
-                        <p>This "fat point" remembers first-order deformation data. Connection to tangent spaces and deformation theory is becoming clearer.</p>
-                        
-                        <div class="topics-list">
-                            <span class="topic-tag">Schemes</span>
-                            <span class="topic-tag">Algebraic Geometry</span>
-                            <span class="topic-tag">Deformation Theory</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-    
-            <!-- Weekly Reviews Section -->
-        <div id="weekly" class="posts-section" style="display: none;">
-            <h2>Weekly Reviews</h2>
-            <div class="weekly-summary">
-                <h3>📊 Week 33 Summary</h3>
-                <p><strong>Total Hours This Week:</strong> Jorys: 28.5h | Tanguy: 31h</p>
-                <p><strong>Key Achievements:</strong> Major breakthrough in understanding cohomology (Jorys) and implementing ADMM (Tanguy)</p>
-                <p><strong>Collaboration:</strong> Found connections between optimization on manifolds and differential geometry</p>
-            </div>
-            <div class="weekly-summary">
-                <h3>📊 Week 32 Summary</h3>
-                <p><strong>Total Hours This Week:</strong> Jorys: 25h | Tanguy: 27h</p>
-                <p><strong>Focus:</strong> Schemes and varieties (Jorys), Convex optimization basics (Tanguy)</p>
-            </div>
-        </div>
-        
-        <!-- Resources Section -->
-        <div id="resources" class="posts-section" style="display: none;">
-            <h2>Resources</h2>
-            <div class="post">
-                <h3>📚 Jorys's Resources - Algebraic Geometry</h3>
-                <ul style="line-height: 2; color: var(--text-secondary);">
-                    <li><a href="https://math.stanford.edu/~vakil/216blog/FOAGnov1817public.pdf" class="resource-link">Vakil - The Rising Sea (Algebraic Geometry)</a></li>
-                    <li><a href="https://stacks.math.columbia.edu/" class="resource-link">The Stacks Project</a></li>
-                    <li><a href="#" class="resource-link">Hartshorne - Algebraic Geometry</a></li>
-                    <li><a href="#" class="resource-link">Eisenbud & Harris - Geometry of Schemes</a></li>
-                </ul>
-                <h3>📐 Tanguy's Resources - Optimization</h3>
-                <ul style="line-height: 2; color: var(--text-secondary);">
-                    <li><a href="https://web.stanford.edu/~boyd/cvxbook/" class="resource-link">Boyd & Vandenberghe - Convex Optimization</a></li>
-                    <li><a href="https://web.stanford.edu/~boyd/papers/prox_algs.html" class="resource-link">Proximal Algorithms</a></li>
-                    <li><a href="#" class="resource-link">Nocedal & Wright - Numerical Optimization</a></li>
-                    <li><a href="#" class="resource-link">Beck - First-Order Methods in Optimization</a></li>
-                </ul>
-                <h3>🔗 Shared Resources</h3>
-                <ul style="line-height: 2; color: var(--text-secondary);">
-                    <li><a href="#" class="resource-link">Absil et al. - Optimization Algorithms on Matrix Manifolds</a></li>
-                    <li><a href="https://www.math3ma.com/" class="resource-link">Tai-Danae Bradley's Math Blog</a></li>
-                    <li><a href="https://terrytao.wordpress.com/" class="resource-link">Terence Tao's Blog</a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <!-- About Section -->
-        <div id="about" class="posts-section" style="display: none;">
-            <h2>About This Blog</h2>
-            <div class="post">
-                <h3>Our Mission</h3>
-                <p>We're two master's students in applied mathematics documenting our daily journey toward PhD programs. This blog serves as both a motivational tool and a record of our learning process.</p>
-                
-                <h3>The Authors</h3>
-                <div style="margin: 2rem 0;">
-                    <h4 style="color: var(--accent-jorys); margin-bottom: 1rem;">Jorys Mahamba</h4>
-                    <p>Pursuing a PhD in pure mathematics, focusing on algebraic geometry and mathematical foundations of quantum gravity. Target programs: MPIM Bonn, Princeton.</p>
-                    <p style="margin-top: 0.5rem;"><strong>Research Interests:</strong> Schemes, Cohomology, Category Theory, Quantum Geometry</p>
-                </div>
-                
-                <div style="margin: 2rem 0;">
-                    <h4 style="color: var(--accent-tanguy); margin-bottom: 1rem;">Tanguy Villain</h4>
-                    <p>Pursuing a PhD in applied mathematics at École Polytechnique, specializing in optimization theory and algorithms.</p>
-                    <p style="margin-top: 0.5rem;"><strong>Research Interests:</strong> Convex Optimization, Proximal Methods, Distributed Algorithms, Machine Learning</p>
-                </div>
-                
-                <h3>Why This Blog?</h3>
-                <p>Daily accountability and structure are crucial for PhD preparation. By documenting our work publicly, we:</p>
-                <ul style="line-height: 2; color: var(--text-secondary); margin-left: 2rem;">
-                    <li>Maintain consistent study habits</li>
-                    <li>Track progress quantitatively</li>
-                    <li>Share insights across pure and applied mathematics</li>
-                    <li>Build a portfolio for PhD applications</li>
-                </ul>
-                
-                <h3>Contact</h3>
-                <p>Feel free to reach out if you're on a similar journey or have questions about our work!</p>
-            </div>
-        </div>
-    </main>
-    
-    <!-- Floating Add Button -->
-    <button class="add-post-btn" onclick="showAddPostInstructions()">+</button>
-    
-    <!-- Add Post Instructions Modal -->
-    <div id="addPostModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; padding: 2rem;">
-        <div style="max-width: 600px; margin: 5% auto; background: var(--bg-secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
-            <h2 style="color: var(--accent-jorys); margin-bottom: 1rem;">How to Add a New Post</h2>
-            <ol style="line-height: 2; color: var(--text-secondary);">
-                <li>Go to the GitHub repository</li>
-                <li>Click on <code>index.html</code></li>
-                <li>Click the pencil icon to edit</li>
-                <li>Find the <code>&lt;!-- Sample Posts --&gt;</code> section</li>
-                <li>Copy one of the existing post blocks</li>
-                <li>Paste it at the top of the posts section</li>
-                <li>Update the date, author, title, and content</li>
-                <li>Commit your changes</li>
-            </ol>
-            <button onclick="closeAddPostModal()" style="background: var(--accent-jorys); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 1rem;">Got it!</button>
-        </div>
-    </div>
-    
-    <script>
-        // Initialize KaTeX rendering
-        document.addEventListener("DOMContentLoaded", function() {
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Render math
             renderMathInElement(document.body, {
                 delimiters: [
-                    {left: '$', right: '$', display: true},
-                    {left: '
-</body>
-</html>, right: '
-</body>
-</html>, display: false},
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
                     {left: '\\(', right: '\\)', display: false},
                     {left: '\\[', right: '\\]', display: true}
                 ],
                 throwOnError: false
             });
             
-            // Initialize syntax highlighting
+            // Highlight code
             hljs.highlightAll();
         });
-        
-        // Navigation functionality
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.posts-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            
-            // Show the selected section
-            if (sectionId === 'home') {
-                document.querySelector('.posts-section').style.display = 'block';
-            } else {
-                const section = document.getElementById(sectionId);
-                if (section) {
-                    section.style.display = 'block';
-                }
-            }
-            
-            // Update active nav link
-            document.querySelectorAll('nav a').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + sectionId) {
-                    link.classList.add('active');
-                }
-            });
-        }
-        
-        // Navigation click handlers
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const sectionId = this.getAttribute('href').replace('#', '');
-                showSection(sectionId);
-            });
-        });
-        
-        // Filter functionality
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const posts = document.querySelectorAll('.post');
-        
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                
-                const filter = this.textContent.toLowerCase();
-                
-                posts.forEach(post => {
-                    if (filter === 'all') {
-                        post.style.display = 'block';
-                    } else {
-                        const authorBadge = post.querySelector('.author-badge');
-                        if (authorBadge) {
-                            const author = authorBadge.textContent.toLowerCase();
-                            if (author === filter) {
-                                post.style.display = 'block';
-                            } else {
-                                post.style.display = 'none';
-                            }
-                        }
-                    }
-                });
-            });
-        });
-        
-        // Add post modal functions
-        function showAddPostInstructions() {
-            document.getElementById('addPostModal').style.display = 'block';
-        }
-        
-        function closeAddPostModal() {
-            document.getElementById('addPostModal').style.display = 'none';
-        }
-        
-        // Initialize with home section visible
-        showSection('home');
     </script>
 </body>
 </html>
