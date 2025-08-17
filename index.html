@@ -436,19 +436,19 @@
         <div class="stats-section">
             <div class="stat-card jorys">
                 <h3>Jorys - Total Hours</h3>
-                <div class="stat-value">127</div>
+                <div class="stat-value">0</div>
             </div>
             <div class="stat-card tanguy">
                 <h3>Tanguy - Total Hours</h3>
-                <div class="stat-value">134</div>
+                <div class="stat-value">0</div>
             </div>
             <div class="stat-card">
                 <h3>Current Streak</h3>
-                <div class="stat-value">12 days</div>
+                <div class="stat-value">1 day</div>
             </div>
             <div class="stat-card">
                 <h3>Total Posts</h3>
-                <div class="stat-value">48</div>
+                <div class="stat-value">2</div>
             </div>
         </div>
         
@@ -464,10 +464,10 @@
             </div>
             
             <div class="weekly-summary">
-                <h3>📊 Week 33 Summary</h3>
-                <p><strong>Jorys:</strong> Deep dive into sheaf cohomology and its applications to algebraic geometry. Made significant progress on understanding the relationship between Čech and derived functor cohomology.</p>
-                <p><strong>Tanguy:</strong> Focused on convex optimization theory, particularly proximal gradient methods and their convergence rates. Implemented several algorithms in Python.</p>
-                <p><strong>Joint insight:</strong> Found interesting connections between optimization on manifolds and differential geometry concepts Jorys has been studying.</p>
+                <h3>📊 Week 34 Summary</h3>
+                <p><strong>Jorys:</strong> Ongoing.</p>
+                <p><strong>Tanguy:</strong> Ongoing.</p>
+                <p><strong>Joint insight:</strong> Ongoing.</p>
             </div>
             
             <div id="posts-container">
@@ -475,35 +475,40 @@
                     <div class="post-header">
                         <div class="post-meta">
                             <span class="author-badge jorys">Jorys</span>
-                            <span class="post-date">August 17, 2025 • 21:45</span>
+                            <span class="post-date">August 18, 2025 • 21:45</span>
                         </div>
                         <span class="hours-badge">6.5 hours</span>
                     </div>
                     <div class="post-content">
-                        <h3>Sheaf Cohomology & Spectral Sequences</h3>
-                        <p>Productive session working through Hartshorne Chapter III. Finally understood the geometric interpretation of higher cohomology groups!</p>
+                        <h3>First glimpse of algebraic topology & discovery of modules</h3>
+                        <p>
+                            Continuing my self-study of topology (Jänich) and commutative algebra (Atiyah-MacDonald & Professor Borcherd's YouTube series backed by 
+                            Eisenbud's <i>Commutative Algebra with a View Toward Algebraic Geometry</i>) before diving into homological algebra, algebraic geometry and 
+                            sheaf theory (to finally discover the math behind the poetic term of <i>cohomology</i>) through the careful reading of Godement's 
+                            <i>Topologie algébrique et théorie des faisceaux</i>. Today, I covered homotopy [...] as well as modules [...].
+                        </p>
                         
                         <div class="math-block">
-                            <p>Key insight: For a coherent sheaf \(\mathcal{F}\) on a projective scheme \(X\), we have the vanishing theorem:</p>
+                            <p>Key insight: à compléter</p>
                             <p style="text-align: center; margin: 1rem 0;">
                                 \(H^i(X, \mathcal{F}(n)) = 0\) for \(i > 0\) and \(n \gg 0\)
                             </p>
                         </div>
                         
-                        <p>This has deep implications for understanding the global sections functor. Also worked through the proof of Serre duality.</p>
+                        <p>Why is this a key insight. Perhaps another thing I will have done.</p>
                         
                         <div class="topics-list">
-                            <span class="topic-tag">Algebraic Geometry</span>
-                            <span class="topic-tag">Cohomology</span>
-                            <span class="topic-tag">Spectral Sequences</span>
-                            <span class="topic-tag">Serre Duality</span>
+                            <span class="topic-tag">Algebraic Topology</span>
+                            <span class="topic-tag">Commutative Algebra</span>
+                            <span class="topic-tag">Homotopy</span>
+                            <span class="topic-tag">Modules</span>
                         </div>
                         
                         <div class="resources">
                             <h4>Resources</h4>
-                            <a href="#" class="resource-link">Hartshorne Ch. III §5-7</a>
-                            <a href="#" class="resource-link">Vakil's Rising Sea §18</a>
-                            <a href="#" class="resource-link">Stack Project - Cohomology</a>
+                            <a href="#" class="resource-link">Jänich Ch. ... §...</a>
+                            <a href="#" class="resource-link">Atiyah-MacDonald Ch. ... §...</a>
+                            <a href="#" class="resource-link">Rings and modules by Richard E Borcherd Videos 1 - 16</a>
                         </div>
                     </div>
                 </div>
@@ -546,30 +551,6 @@ def prox_grad(f_grad, prox_g, x0, step_size, max_iter=1000):
                         </div>
                     </div>
                 </div>
-                
-                <div class="post" data-author="jorys">
-                    <div class="post-header">
-                        <div class="post-meta">
-                            <span class="author-badge jorys">Jorys</span>
-                            <span class="post-date">August 16, 2025 • 19:15</span>
-                        </div>
-                        <span class="hours-badge">4 hours</span>
-                    </div>
-                    <div class="post-content">
-                        <h3>Schemes and Morphisms</h3>
-                        <p>Today's breakthrough: finally internalized why we need schemes instead of just varieties. The nilpotent elements capture infinitesimal information!</p>
-                        
-                        <div class="math-block">
-                            <p style="text-align: center;">\(\text{Spec}(k[x]/(x^2)) \hookrightarrow \text{Spec}(k[x])\)</p>
-                        </div>
-                        
-                        <div class="topics-list">
-                            <span class="topic-tag">Schemes</span>
-                            <span class="topic-tag">Algebraic Geometry</span>
-                            <span class="topic-tag">Deformation Theory</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         
@@ -578,17 +559,11 @@ def prox_grad(f_grad, prox_g, x0, step_size, max_iter=1000):
             <h2>Weekly Reviews</h2>
             
             <div class="weekly-summary">
-                <h3>📊 Week 33 Summary (August 11-17, 2025)</h3>
-                <p><strong>Total Hours:</strong> Jorys: 28.5h | Tanguy: 31h</p>
-                <p><strong>Jorys:</strong> Deep dive into sheaf cohomology and spectral sequences. Major breakthrough in understanding Serre duality.</p>
-                <p><strong>Tanguy:</strong> Implemented proximal gradient methods and started exploring ADMM for distributed optimization.</p>
-                <p><strong>Joint Discovery:</strong> Optimization on manifolds connects directly to differential geometry!</p>
-            </div>
-            
-            <div class="weekly-summary">
-                <h3>📊 Week 32 Summary (August 4-10, 2025)</h3>
-                <p><strong>Total Hours:</strong> Jorys: 25h | Tanguy: 27h</p>
-                <p><strong>Focus:</strong> Schemes fundamentals (Jorys), Convex analysis basics (Tanguy)</p>
+                <h3>📊 Week 34 Summary (August 18-24, 2025)</h3>
+                <p><strong>Total Hours:</strong> Jorys: ongoing | Tanguy: ongoing</p>
+                <p><strong>Jorys:</strong> Ongoing</p>
+                <p><strong>Tanguy:</strong> Ongoing.</p>
+                <p><strong>Joint Discovery:</strong> First week of jointly tracking down our work systematically. Ongoing.</p>
             </div>
         </div>
         
@@ -599,10 +574,11 @@ def prox_grad(f_grad, prox_g, x0, step_size, max_iter=1000):
             <div class="post">
                 <h3>📚 Jorys - Pure Mathematics</h3>
                 <ul style="line-height: 2; margin: 1rem 0;">
-                    <li><a href="https://math.stanford.edu/~vakil/216blog/FOAGnov1817public.pdf" class="resource-link" target="_blank">Vakil - The Rising Sea</a></li>
-                    <li><a href="https://stacks.math.columbia.edu/" class="resource-link" target="_blank">The Stacks Project</a></li>
-                    <li>Hartshorne - Algebraic Geometry</li>
-                    <li>Mac Lane - Categories for the Working Mathematician</li>
+                    <li><a href="https://www.math.ens.psl.eu/~benoist/refs/Eisenbud.pdf" class="ressource-link" target="_blank">Eisenbud - Commutative Algebra with a View Toward Algebraic Geometry</a></li>
+                    <li><a href="https://www.youtube.com/playlist?list=PL8yHsr3EFj53rSexSz7vsYt-3rpHPR3HB" class="ressource-link" target="_blank">Commutative algebra by Richard E Borcherds (YouTube)</a></li>
+                    <li><a href="https://www.youtube.com/playlist?list=PL8yHsr3EFj52XDLrmvrFDgwcf6XOm2TEE" class="ressource-link" target="_blank">Rings and modules by Richard E Borcherds (YouTube)</a></li>
+                    <li><a href="https://webhomes.maths.ed.ac.uk/~v1ranick/papers/atiyahmacdonald.pdf" class="ressource-link" target="_blank">Atiyah & MacDonald - Introduction to Commutative Algebra</a></li>
+                    <li>Jänich - Topology</a></li>
                 </ul>
                 
                 <h3>📐 Tanguy - Applied Mathematics</h3>
@@ -614,7 +590,7 @@ def prox_grad(f_grad, prox_g, x0, step_size, max_iter=1000):
                 
                 <h3>🔗 Shared Resources</h3>
                 <ul style="line-height: 2; margin: 1rem 0;">
-                    <li>Absil et al. - Optimization Algorithms on Matrix Manifolds</li>
+                    <li><a href="https://ncatlab.org/nlab/show/HomePage" class="resource-link" target="_blank">nLab</a></li>
                     <li><a href="https://www.math3ma.com/" class="resource-link" target="_blank">Tai-Danae Bradley's Blog</a></li>
                     <li><a href="https://terrytao.wordpress.com/" class="resource-link" target="_blank">Terence Tao's Blog</a></li>
                 </ul>
@@ -632,7 +608,7 @@ def prox_grad(f_grad, prox_g, x0, step_size, max_iter=1000):
                 <div style="margin: 2rem 0;">
                     <h3 style="color: var(--accent-jorys);">Jorys Mahamba</h3>
                     <p><strong>Goal:</strong> PhD in Pure Mathematics</p>
-                    <p><strong>Focus:</strong> Algebraic Geometry, Cohomology, Mathematical Physics</p>
+                    <p><strong>Focus:</strong> Algebraic Geometry, Cohomology Theories, Quantum Gravity, Machine Learning</p>
                 </div>
                 
                 <div style="margin: 2rem 0;">
