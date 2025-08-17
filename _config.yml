@@ -1,0 +1,124 @@
+# Site settings
+title: Daily Mathematics Log
+description: Jorys & Tanguy - PhD Journey in Mathematics
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site
+
+# Authors
+authors:
+  jorys:
+    name: Jorys Mahamba
+    display_name: Jorys
+    focus: Algebraic Geometry & Mathematical Physics
+    institution: MPIM Bonn / Princeton (target)
+    color: "#6366f1"
+    github: # your github username
+    email: # your email
+  tanguy:
+    name: Tanguy Villain
+    display_name: Tanguy
+    focus: Applied Mathematics & Optimization
+    institution: Polytechnique (target)
+    color: "#ec4899"
+    github: # tanguy's github username
+    email: # tanguy's email
+
+# Build settings
+markdown: kramdown
+kramdown:
+  math_engine: mathjax
+  syntax_highlighter: rouge
+  input: GFM
+  auto_ids: true
+  hard_wrap: false
+  syntax_highlighter_opts:
+    css_class: 'highlight'
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+      start_line: 1
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /posts/:year/:month/:day/:title/
+  weekly:
+    output: true
+    permalink: /weekly/:title/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      comments: false
+  - scope:
+      path: ""
+      type: "weekly"
+    values:
+      layout: "weekly"
+
+# Pagination
+paginate: 10
+paginate_path: "/page:num/"
+
+# Exclude files
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+  - LICENSE
+  - CNAME
+
+# Site statistics (update these via a script or manually)
+stats:
+  total_hours_jorys: 0
+  total_hours_tanguy: 0
+  current_streak: 0
+  total_posts: 0
+  last_updated: ""
+
+# Categories for topics
+topic_categories:
+  pure_math:
+    - Algebraic Geometry
+    - Topology
+    - Category Theory
+    - Number Theory
+    - Differential Geometry
+    - Representation Theory
+    - Cohomology
+    - Schemes
+    - Sheaves
+    - Quantum Geometry
+  applied_math:
+    - Optimization
+    - Numerical Analysis
+    - Machine Learning
+    - Control Theory
+    - Operations Research
+    - Convex Analysis
+    - Stochastic Processes
+    - PDEs
+    - Scientific Computing
+  general:
+    - Problem Solving
+    - Research Methods
+    - Paper Review
+    - Seminar Notes
+    - Conference Prep
