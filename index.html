@@ -591,37 +591,39 @@
                     <div class="post-header">
                         <div class="post-meta">
                             <span class="author-badge tanguy">Tanguy</span>
-                            <span class="post-date">August 17, 2025 • 20:30</span>
+                            <span class="post-date">August 19, 2025</span>
                         </div>
-                        <span class="hours-badge">5 hours</span>
+                        <span class="hours-badge">5 h</span>
                     </div>
                     <div class="post-content">
-                        <h3>Proximal Gradient Methods & ADMM</h3>
-                        <p>Implemented and analyzed convergence of proximal gradient descent for composite optimization problems.</p>
+                        <ul>
+                        <li>
+                            Reviewed Banach Space theory including:
+                            <ul>
+                            <li>Finite and infinite dimensional vector spaces</li>
+                            <li>Normed spaces and Banach spaces</li>
+                            <li>Some examples of Banach spaces (little lp spaces, space of bounded continuous functions on a metric space)</li>
+                            </ul>
+                        </li>
+                        <li>Exercised by proving that:</li>
+                        </ul>
+                    <div class="math-block">
+                        <p style="text-align: center;">
+                            \[ C_0 := \{a \in l^\infty \mid \lim_{j \to \infty} a_j = 0 \} \]
+                        </p>
+                        <p>
+                            with norm \(\|a\|_\infty = \sup_{1 \leq j \leq \infty} \|a_j\|\) is a Banach Space
+                        </p>
+                    </div>
                         
-                        <div class="math-block">
-                            <p style="text-align: center;">\(\min_{x \in \mathbb{R}^n} f(x) + g(x)\)</p>
-                            <p>where \(f\) is smooth with \(L\)-Lipschitz gradient and \(g\) is convex</p>
-                        </div>
-                        
-                        <pre><code class="language-python"># Proximal gradient implementation
-def prox_grad(f_grad, prox_g, x0, step_size, max_iter=1000):
-    x = x0.copy()
-    for k in range(max_iter):
-        grad = f_grad(x)
-        x = prox_g(x - step_size * grad, step_size)
-    return x</code></pre>
                         
                         <div class="topics-list">
-                            <span class="topic-tag">Convex Optimization</span>
-                            <span class="topic-tag">Proximal Methods</span>
-                            <span class="topic-tag">ADMM</span>
+                            <span class="topic-tag">Functional Analysis</span>
                         </div>
                         
                         <div class="resources">
                             <h4>Resources</h4>
-                            <a href="#" class="resource-link">Boyd - Proximal Algorithms</a>
-                            <a href="#" class="resource-link">Beck & Teboulle (2009)</a>
+                            <a href="https://ocw.mit.edu/courses/18-102-introduction-to-functional-analysis-spring-2021/pages/lecture-notes-and-readings/" class=resource-link >MIT - Functional Analysis</a>
                         </div>
                     </div>
                 </div>
