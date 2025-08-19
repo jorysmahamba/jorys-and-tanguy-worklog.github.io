@@ -436,7 +436,7 @@
         <div class="stats-section">
             <div class="stat-card jorys">
                 <h3>Jorys - Total Hours</h3>
-                <div class="stat-value">0</div>
+                <div class="stat-value">3</div>
             </div>
             <div class="stat-card tanguy">
                 <h3>Tanguy - Total Hours</h3>
@@ -475,40 +475,114 @@
                     <div class="post-header">
                         <div class="post-meta">
                             <span class="author-badge jorys">Jorys</span>
-                            <span class="post-date">August 18, 2025 • 21:45</span>
+                            <span class="post-date">August 19, 2025 • 23:59</span>
                         </div>
-                        <span class="hours-badge">6.5 hours</span>
+                        <span class="hours-badge">x hours</span>
                     </div>
                     <div class="post-content">
-                        <h3>First glimpse of algebraic topology & discovery of modules</h3>
+                        <h3>Homotopy, more modules, and an exposition to Grothendieck's work</h>
                         <p>
-                            Continuing my self-study of topology (Jänich) and commutative algebra (Atiyah-MacDonald & Professor Borcherd's YouTube series backed by 
-                            Eisenbud's <i>Commutative Algebra with a View Toward Algebraic Geometry</i>) before diving into homological algebra, algebraic topology and 
-                            sheaf theory (to finally discover the math behind the poetic term of <i>cohomology</i>, among other things) through the careful reading of Godement's 
-                            <i>Topologie algébrique et théorie des faisceaux</i>. Today, I covered homotopy [...] as well as modules [...].
+                            I was still affected by some fatigue todaybut I managed to finish Aitayah-MacDonald's Chapter 2 on modules, learning about tensor products 
+                            and exact sequences among other things, and read Jänich's Chapters 4 to 6 on Quotient Spaces, Completion of Metric Spaces and Homotopy (finally!). 
+                            This represents my first step within the realms of algebraic topology, a field which I have been eager to discover since I learned about Poincaré's
+                            conjecture during my first year of university.
                         </p>
                         
                         <div class="math-block">
-                            <p>Key insight: à compléter</p>
                             <p style="text-align: center; margin: 1rem 0;">
-                                \(H^i(X, \mathcal{F}(n)) = 0\) for \(i > 0\) and \(n \gg 0\)
+                                Something about homotopy...
                             </p>
                         </div>
                         
-                        <p>Why is this a key insight. Perhaps another thing I will have done.</p>
+                        <p>
+                            Commentary...
+                        </p>
+                        <p>I also watched a lecture by Professor Pierre Deligne at the Institute of Advanced Studies in 1996 on 
+                            <a href="https://youtu.be/PeMAyPGjL68?si=_Bxt0u5tTFaNsJCM" class=resource-link target=_blank><i>L'œuvre d'Alexandre Grothendieck</i></a>. 
+                            I could only understand the first few minutes but was quickly lost in mathematical formalism I currently don't know about. It was still nice 
+                            to be carried along by the poetry of Grothendieck's mathematical work beautifully counted by Deligne. I could still understand the landscape 
+                            of Grothendieck's work as well as understanding even more how commutative algebra served as a pillar on which he could build his theories, enforcing 
+                            my motivation to understand deeply the content of this field.
+                        </p>
                         
                         <div class="topics-list">
+                            <span class="topic-tag">General Topology</span>
                             <span class="topic-tag">Algebraic Topology</span>
                             <span class="topic-tag">Commutative Algebra</span>
+                            <span class="topic-tag">Quotient Spaces</span>
+                            <span class="topic-tag">Completion of Metric Spaces</span>
                             <span class="topic-tag">Homotopy</span>
+                            <span class="topic-tag">Tensor Product</span>
+                            <span class="topic-tag">Exact Sequences</span>
+                        </div>
+                        
+                        <div class="resources">
+                            <h4>Resources</h4>
+                            <a href="#" class="resource-link">Jänich Ch. 4 - 6</a>
+                            <a href="#" class="resource-link">Atiyah-MacDonald Ch. 2 §5 - 11</a>
+                            <a href="https://youtu.be/PeMAyPGjL68?si=_Bxt0u5tTFaNsJCM" class=resource-link target=_blank><i>L'œuvre d'Alexandre Grothendieck</i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="post" data-author="jorys">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <span class="author-badge jorys">Jorys</span>
+                            <span class="post-date">August 18, 2025 • 23:59</span>
+                        </div>
+                        <span class="hours-badge">3 hours</span>
+                    </div>
+                    <div class="post-content">
+                        <h3>Topological vector Spaces, Modules, and metamathematics</h3>
+                        <p>
+                            Continuing my self-study of general topology (Jänich) and commutative algebra (Atiyah-MacDonald & Professor Borcherd's YouTube series backed by 
+                            Eisenbud's <i>Commutative Algebra with a View Toward Algebraic Geometry</i>) before diving into homological algebra, algebraic topology and 
+                            sheaf theory (to finally discover the math behind the poetic term of <i>cohomology</i>, among other things) through the careful reading of Godement's 
+                            <i>Topologie algébrique et théorie des faisceaux</i>.
+                        </p>
+                        <p>
+                            Today I couldn't work as much as I would have wanted due to fatigue so I only manage to start Aitayah-MacDonald's Chapter 2 on modules and read Jänich's 
+                            Chapter 3 on Topological Vector Spaces. I struggled a bit with the notion of direct sum and specifically with the following statement:
+                        </p>
+                        
+                        <div class="math-block">
+                            <p style="text-align: center; margin: 1rem 0;">
+                                Given a module decomposition
+                                \[
+                                A = \mathfrak{a}_1 \oplus \cdots \oplus \mathfrak{a}_n
+                                \]
+                                of $A$ as a direct sum of ideals, we have
+                                \[
+                                A \cong \prod_{i=1}^{n} (A/\mathfrak{b}_i)
+                                \]
+                                where $\mathfrak{b}_i = \bigoplus_{j \neq i} \mathfrak{a}_j$. Each ideal $\mathfrak{a}_i$ is a ring (isomorphic to $A/\mathfrak{b}_i$). 
+                                The identity element $e_i$ of $\mathfrak{a}_i$ is an idempotent in $A$, and $\mathfrak{a}_i = (e_i)$.
+                            </p>
+                        </div>
+                        
+                        <p>
+                            I can see it operation-wise but it is harder to get it dealing with the spaces directly. I will keep this result in the back of my head to 
+                            finally get it.
+                        </p>
+                        <p>I also watched a conference by Professor Alain Connes at <i>Collège de France</i> in 2018 on <a href="https://youtu.be/zmT8MHMIOLg?si=tUQXs9NJfG1vEetI" class=resource-link target=_blank><i>Langage mathématique</i></a> 
+                            as part of my current metamathematical reflection on the nature of mathematical reality. It was really instructive and made me reconsider the importance of the notion of spectrum 
+                            in mathematics at an even higher level than I already did. It also made me discover the <i>Lincos</i> by Hans Freundenthal which I aim to at 
+                            least read the introduction sometime in the following weeks.
+                        </p>
+                        
+                        <div class="topics-list">
+                            <span class="topic-tag">General Topology</span>
+                            <span class="topic-tag">Commutative Algebra</span>
+                            <span class="topic-tag">Topological Vector Spaces</span>
                             <span class="topic-tag">Modules</span>
                         </div>
                         
                         <div class="resources">
                             <h4>Resources</h4>
-                            <a href="#" class="resource-link">Jänich Ch. ... §...</a>
-                            <a href="#" class="resource-link">Atiyah-MacDonald Ch. ... §...</a>
-                            <a href="#" class="resource-link">Rings and modules by Richard E Borcherd Videos 1 - 16</a>
+                            <a href="#" class="resource-link">Jänich Ch. 3</a>
+                            <a href="#" class="resource-link">Atiyah-MacDonald Ch. 2 §1 - 4</a>
+                            <a href="https://youtu.be/zmT8MHMIOLg?si=tUQXs9NJfG1vEetI" class=resource-link target=_blank>Alain Connes - <i>Langage mathématique</i></a>
                         </div>
                     </div>
                 </div>
